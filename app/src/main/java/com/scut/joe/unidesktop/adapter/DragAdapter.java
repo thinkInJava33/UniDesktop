@@ -3,6 +3,7 @@ package com.scut.joe.unidesktop.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.container.DragGrid;
 import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.Common;
+import com.scut.joe.unidesktop.util.dbManager;
 
 public class DragAdapter extends BaseAdapter {
 	/** TAG*/
@@ -191,6 +193,11 @@ public class DragAdapter extends BaseAdapter {
 	public void exchange(int dragPostion, int dropPostion) {
 		holdPosition = dropPostion;
 		AppItem dragItem = getItem(dragPostion);
+		AppItem dropItem = getItem(dropPostion);
+		dbManager db = new dbManager(context);
+		SharedPreferences modePreferences = context.getSharedPreferences("mode",Context.MODE_PRIVATE);
+		int currentMode = modePreferences.getInt("choose", -1);
+		db.exchange(currentMode, dragItem, dropItem);
 		Log.d(TAG, "startPostion=" + dragPostion + ";endPosition=" + dropPostion);
 		if (dragPostion < dropPostion) {
 			channelList.add(dropPostion + 1, dragItem);

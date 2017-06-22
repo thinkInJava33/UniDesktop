@@ -1,12 +1,16 @@
 package com.scut.joe.unidesktop.page;
 
 import android.annotation.SuppressLint;
+import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -79,9 +83,19 @@ public class IndividualityPage extends Fragment{
         ll = (RelativeLayout)view.findViewById(R.id.ll);
 
         initDensityDpi();
+        setBackground();
+
         return view;
     }
 
+    private void setBackground(){
+        WallpaperManager wallpaperManager = WallpaperManager
+                .getInstance(mContext);
+        // 获取当前壁纸
+        Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+
+        gridview.setBackgroundDrawable(wallpaperDrawable);
+    }
 
     /**
      * 获取手机的屏幕密度DPI

@@ -68,7 +68,7 @@ public class dbManager {
         cv.put("row_index", -1);
         cv.put("column_index", -1);
         //修改条件
-        String whereClause = "id=?";
+        String whereClause = "_id=?";
         //修改添加参数
         String[] whereArgs={String.valueOf(id)};
         switch (mode){
@@ -86,7 +86,7 @@ public class dbManager {
 
     public void delete(int mode, int id){
         //修改条件
-        String whereClause = "id=?";
+        String whereClause = "_id=?";
         //修改添加参数
         String[] whereArgs={String.valueOf(id)};
         switch (mode){
@@ -98,6 +98,37 @@ public class dbManager {
                 break;
             case 2:
                 db.delete("individuality_tb",whereClause,whereArgs);
+                break;
+        }
+
+    }
+
+    public void exchange(int mode,AppItem app1,AppItem app2){
+        ContentValues cv1 = new ContentValues();
+        cv1.put("row_index", app1.getRowIndex());
+        cv1.put("column_index", app1.getColIndex());
+        cv1.put("page_num", app1.getPageNum());
+        ContentValues cv2 = new ContentValues();
+        cv2.put("row_index", app2.getRowIndex());
+        cv2.put("column_index", app2.getColIndex());
+        cv2.put("page_num", app2.getPageNum());
+        //修改条件
+        String whereClause = "_id=?";
+        //修改添加参数
+        String[] whereArgs1={String.valueOf(app1.getId())};
+        String[] whereArgs2={String.valueOf(app2.getId())};
+        switch (mode){
+            case 0:
+                db.update("elderly_tb",cv2,whereClause,whereArgs1);
+                db.update("elderly_tb",cv1,whereClause,whereArgs2);
+                break;
+            case 1:
+                db.update("guardianship_tb",cv2,whereClause,whereArgs1);
+                db.update("guardianship_tb",cv1,whereClause,whereArgs2);
+                break;
+            case 2:
+                db.update("individuality_tb",cv2,whereClause,whereArgs1);
+                db.update("individuality_tb",cv1,whereClause,whereArgs2);
                 break;
         }
     }
