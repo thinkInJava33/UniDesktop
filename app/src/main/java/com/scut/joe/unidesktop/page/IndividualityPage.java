@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.scut.joe.unidesktop.adapter.DragAdapter;
 import com.scut.joe.unidesktop.container.DragGrid;
 import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.Common;
+import com.scut.joe.unidesktop.util.dbManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +41,7 @@ import java.util.List;
 public class IndividualityPage extends Fragment{
     //DragGrid mDragGrid;
     RelativeLayout ll;
-
+    private int pageIndex;
     private DragAdapter adapter;
     private DragGrid gridview;
     private Context mContext;
@@ -53,7 +55,23 @@ public class IndividualityPage extends Fragment{
      * 判断是否正在移动
      */
     private boolean isMove = false;
+
+    public static IndividualityPage newInstance(int pageIndex){
+        Bundle args = new Bundle();
+        args.putSerializable("page_num",pageIndex);
+        IndividualityPage fragment = new IndividualityPage();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pageIndex = (int) getArguments().getSerializable("page_num");
+    }
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_individuality_page, container, false);
         mContext = getActivity();
         gridview = (DragGrid)view.findViewById(R.id.gradview);
@@ -129,33 +147,12 @@ public class IndividualityPage extends Fragment{
 
     /**
      * 获取初始化数据
-     * @param list
-     * @return
      */
     private List<AppItem> getList() {
         // TODO Auto-generated method stub
-        Intent startupIntent = new Intent(Intent.ACTION_MAIN);
-        startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        PackageManager pm = getActivity().getPackageManager();
-        List<ResolveInfo> activities  = pm.queryIntentActivities(startupIntent, 0);
-        Collections.sort(activities, new Comparator<ResolveInfo>() {
-            @Override
-            public int compare(ResolveInfo a, ResolveInfo b) {
-                PackageManager pm = getActivity().getPackageManager();
-                return String.CASE_INSENSITIVE_ORDER.compare(
-                        a.loadLabel(pm).toString(),
-                        b.loadLabel(pm).toString()
-                );
-            }
-        });
-        List<AppItem> list = new ArrayList<AppItem>();
-        AppItem jcxx = null;
-        for(int i = 0; i < 15; i++){
-            ResolveInfo appInfo = activities.get(i);
-            jcxx = new AppItem(i, appInfo.loadLabel(pm).toString(),appInfo.loadIcon(pm),appInfo.activityInfo.packageName,
-                    appInfo.activityInfo.name);
-            list.add(jcxx);
-        }
+        dbManager manager = new dbManager(getActivity());
+        Log.i("test","pageNum : "+pageIndex);
+        List<AppItem> list = manager.getApps(2,pageIndex);
         return list;
     }
 

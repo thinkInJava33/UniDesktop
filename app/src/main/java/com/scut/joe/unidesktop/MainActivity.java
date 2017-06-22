@@ -2,6 +2,9 @@ package com.scut.joe.unidesktop;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +16,13 @@ import android.view.Window;
 import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
 import com.scut.joe.unidesktop.desktop.GuardianshipDesktop;
 import com.scut.joe.unidesktop.desktop.IndividualityDesktop;
+import com.scut.joe.unidesktop.model.AppItem;
+import com.scut.joe.unidesktop.util.dbManager;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Context mContext;
@@ -23,13 +33,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+        mContext = this;
         modePreferences = getSharedPreferences("mode", Context.MODE_PRIVATE);
 
         setContentView(R.layout.activity_main);
         chooseMode = modePreferences.getInt("choose", -1);
 
         if(chooseMode == -1){
+            Intent startupIntent = new Intent(Intent.ACTION_MAIN);
+            startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            PackageManager pm = getPackageManager();
+            List<ResolveInfo> activities  = pm.queryIntentActivities(startupIntent, 0);
+            Collections.sort(activities, new Comparator<ResolveInfo>() {
+                @Override
+                public int compare(ResolveInfo a, ResolveInfo b) {
+                    PackageManager pm = getPackageManager();
+                    return String.CASE_INSENSITIVE_ORDER.compare(
+                            a.loadLabel(pm).toString(),
+                            b.loadLabel(pm).toString()
+                    );
+                }
+            });
+            //List<AppItem> list = new ArrayList<AppItem>();
+           // AppItem jcxx = null;
+
+            dbManager manager = new dbManager(mContext);
+            for(int i = 0; i < activities.size(); i++){
+                int pageNum = i/15;
+                int row = i%15/3;
+                int col = i%15%3;
+                ResolveInfo appInfo = activities.get(i);
+                manager.addItem(2,i, appInfo.loadLabel(pm).toString(),appInfo.loadIcon(pm),appInfo.activityInfo.packageName,
+                        appInfo.activityInfo.name,pageNum,row,col);
+            }
             dialog();
         }else{
             initDesktop(chooseMode);

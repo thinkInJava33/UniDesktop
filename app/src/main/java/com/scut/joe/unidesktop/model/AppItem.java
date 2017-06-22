@@ -18,6 +18,7 @@ public class AppItem {
     private int colIndex;
 
 
+    public AppItem(){}
 
     public AppItem(int id,String appName, Drawable appIcon,String packageName,String className){
         setAppIcon(appIcon);
@@ -82,5 +83,13 @@ public class AppItem {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
     }
 }

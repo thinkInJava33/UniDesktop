@@ -42,12 +42,13 @@ public class IndividualityDesktop extends Desktop {
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                return new IndividualityPage();
+                Log.i("test","current position" + position);
+                return IndividualityPage.newInstance(position);
             }
 
             @Override
             public int getCount() {
-                return 1;
+                return 3;
             }
         });
 
