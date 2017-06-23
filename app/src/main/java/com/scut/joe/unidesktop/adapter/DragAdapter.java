@@ -177,7 +177,12 @@ public class DragAdapter extends BaseAdapter {
 	 */
 	public void deletInfo(int position)
 	{
+		int id = getItem(position).getId();
 		channelList.remove(position);
+		dbManager db = new dbManager(context);
+		SharedPreferences modePreferences = context.getSharedPreferences("mode",Context.MODE_PRIVATE);
+		int currentMode = modePreferences.getInt("choose", -1);
+		db.hide(currentMode,id);
 		hideposition = -1;
 		notifyDataSetChanged();
 	}

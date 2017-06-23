@@ -73,6 +73,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageIndex = (int) getArguments().getSerializable("page_num");
+        initDensityDpi();
     }
 
     @Override
@@ -90,7 +91,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
         //rl_strues = (RelativeLayout)findViewById(R.id.rl_strues);
         ll = (RelativeLayout)view.findViewById(R.id.ll);
 
-        initDensityDpi();
+
         setBackground();
 
         return view;
