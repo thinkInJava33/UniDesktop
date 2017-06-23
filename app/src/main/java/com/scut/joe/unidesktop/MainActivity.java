@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 
 import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
@@ -132,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
                     appInfo.activityInfo.name, pageNum, index);
         }
         mode2Info = getSharedPreferences("mode2Info",MODE_PRIVATE);
-        mode2Editor= modePreferences.edit();
-        mode2Editor.putInt("page_num", activities.size()/15);
+        mode2Editor= mode2Info.edit();
+        mode2Editor.putInt("page_num", activities.size()/15 + 1);
         mode2Editor.putInt("page_row", 5);
         mode2Editor.putInt("page_col", 3);
         mode2Editor.commit();

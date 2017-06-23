@@ -16,6 +16,8 @@ import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.page.ElderlyPage;
 import com.scut.joe.unidesktop.page.IndividualityPage;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by joe on 17-6-16.
  */
@@ -48,7 +50,8 @@ public class IndividualityDesktop extends Desktop {
 
             @Override
             public int getCount() {
-                return 3;
+                int count = getActivity().getSharedPreferences("mode2Info",MODE_PRIVATE).getInt("page_num",2);
+                return count;
             }
         });
 
