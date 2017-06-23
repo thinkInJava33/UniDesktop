@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PagesAdapter extends BaseAdapter {
     private Context mContext;
-    private LayoutInflater mInflater;
+    private LayoutInflater Inflater;
 
 
     @Override
