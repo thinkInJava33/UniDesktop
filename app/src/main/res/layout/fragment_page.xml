@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:columnCount="2"
-    android:rowCount="4">
+<RelativeLayout
+    android:id="@+id/rl"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="14dip"
+    android:layout_marginRight="14dip"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-</GridLayout>
+    <com.scut.joe.unidesktop.container.DragGrid
+        android:id="@+id/grad_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:gravity="center"
+        android:horizontalSpacing="14dip"
+        android:listSelector="@android:color/transparent"
+        android:longClickable="true"
+        android:numColumns="3"
+        android:scrollbars="vertical"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="14.0px" >
+    </com.scut.joe.unidesktop.container.DragGrid>
+</RelativeLayout>

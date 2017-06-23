@@ -41,12 +41,13 @@ public class ElderlyDesktop extends Desktop {
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                return null;
+
+                return ElderlyPage.newInstance(position);
             }
 
             @Override
             public int getCount() {
-                return 0;
+                return 3;
             }
         });
 

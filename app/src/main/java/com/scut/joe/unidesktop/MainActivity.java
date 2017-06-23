@@ -17,6 +17,7 @@ import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
 import com.scut.joe.unidesktop.desktop.GuardianshipDesktop;
 import com.scut.joe.unidesktop.desktop.IndividualityDesktop;
 import com.scut.joe.unidesktop.model.AppItem;
+import com.scut.joe.unidesktop.util.BackHandlerHelper;
 import com.scut.joe.unidesktop.util.dbManager;
 
 import java.util.ArrayList;
@@ -46,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
             initDesktop(chooseMode);
         }
         
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!BackHandlerHelper.handleBackPress(this)) {
+            super.onBackPressed();
+        }
     }
 
     private void dialog(){
