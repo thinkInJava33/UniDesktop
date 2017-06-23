@@ -12,18 +12,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     final String CREATE_TABLE_IP_SQL=
             "create table individuality_tb(_id integer primary " +
                     "key ,name text,icon ,package_name text," +
-                    "class_name text,page_num integer,row_index integer," +
-                    "column_index integer)";
+                    "class_name text,page_num integer,page_index integer)";
     final String CREATE_TABLE_GP_SQL=
             "create table guardianship_tb(_id integer primary " +
                     "key ,name text,icon ,package_name text," +
-                    "class_name text,page_num integer,row_index integer," +
-                    "column_index integer)";
+                    "class_name text,page_num integer,page_index integer)";
     final String CREATE_TABLE_EP_SQL=
             "create table elderly_tb(_id integer primary " +
                     "key ,name text,icon ,package_name text," +
-                    "class_name text,page_num integer,row_index integer," +
-                    "column_index integer)";
+                    "class_name text,page_num integer,page_index integer)";
 
 
     public MyDatabaseHelper(Context context, String name,

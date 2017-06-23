@@ -14,8 +14,7 @@ public class AppItem {
     private String packageName;
     private String className;
     private int pageNum;
-    private int rowIndex;
-    private int colIndex;
+    private int index;
 
 
     public AppItem(){}
@@ -53,24 +52,16 @@ public class AppItem {
         this.appIcon = appIcon;
     }
 
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
-    public void setRowIndex(int rowIndex) {
-        this.rowIndex = rowIndex;
-    }
-
-    public int getColIndex() {
-        return colIndex;
-    }
-
-    public void setColIndex(int colIndex) {
-        this.colIndex = colIndex;
-    }
-
     public String getPackageName() {
         return packageName;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public void setPackageName(String packageName) {

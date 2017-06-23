@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.scut.joe.unidesktop.model.AppItem;
 
@@ -30,7 +31,7 @@ public class dbManager {
     }
 
     public void addItem(int mode,int id, String name,Drawable icon,String packageName,
-            String className,int pageNum, int rowIndex, int columnIndex) {
+            String className,int pageNum, int index) {
         //第一步，将Drawable对象转化为Bitmap对象
         Bitmap bmp = (((BitmapDrawable)icon).getBitmap());
         //第二步，声明并创建一个输出字节流对象
@@ -47,8 +48,7 @@ public class dbManager {
         cv.put("package_name", packageName);
         cv.put("class_name", className);
         cv.put("page_num", pageNum);
-        cv.put("row_index", rowIndex);
-        cv.put("column_index", columnIndex);
+        cv.put("page_index", index);
         switch (mode){
             case 0:
                 db.insert("elderly_tb",null,cv);
@@ -65,8 +65,7 @@ public class dbManager {
 
     public void hide(int mode,int id){
         ContentValues cv = new ContentValues();
-        cv.put("row_index", -1);
-        cv.put("column_index", -1);
+        cv.put("page_index", -1);
         //修改条件
         String whereClause = "_id=?";
         //修改添加参数
@@ -103,34 +102,27 @@ public class dbManager {
 
     }
 
-    public void exchange(int mode,AppItem app1,AppItem app2){
-        ContentValues cv1 = new ContentValues();
-        cv1.put("row_index", app1.getRowIndex());
-        cv1.put("column_index", app1.getColIndex());
-        cv1.put("page_num", app1.getPageNum());
-        ContentValues cv2 = new ContentValues();
-        cv2.put("row_index", app2.getRowIndex());
-        cv2.put("column_index", app2.getColIndex());
-        cv2.put("page_num", app2.getPageNum());
-        //修改条件
-        String whereClause = "_id=?";
-        //修改添加参数
-        String[] whereArgs1={String.valueOf(app1.getId())};
-        String[] whereArgs2={String.valueOf(app2.getId())};
+    public void exchange(int mode,int start,int end,List<AppItem> apps){
+        String modeString;
         switch (mode){
             case 0:
-                db.update("elderly_tb",cv2,whereClause,whereArgs1);
-                db.update("elderly_tb",cv1,whereClause,whereArgs2);
+                modeString  = "elderly_tb";
                 break;
             case 1:
-                db.update("guardianship_tb",cv2,whereClause,whereArgs1);
-                db.update("guardianship_tb",cv1,whereClause,whereArgs2);
+                modeString = "guardianship_tb";
                 break;
-            case 2:
-                db.update("individuality_tb",cv2,whereClause,whereArgs1);
-                db.update("individuality_tb",cv1,whereClause,whereArgs2);
+            default:
+                modeString = "individuality_tb";
                 break;
         }
+        for(int i = start; i <= end; i++){
+            AppItem tempApp = apps.get(i);
+            ContentValues cv = new ContentValues();
+            cv.put("page_index",tempApp.getIndex());
+            db.update(modeString,cv,"_id = ?",new String[]{String.valueOf(tempApp.getId())});
+        }
+
+
     }
 
 
@@ -141,17 +133,17 @@ public class dbManager {
         switch (mode){
             case 0:
                 cursor = db.rawQuery(
-                        "select * from elderly_tb where row_index<>-1 and page_num = ? order by row_index,column_index",
+                        "select * from elderly_tb where page_index<>-1 and page_num = ? order by page_index",
                         new String[] { String.valueOf(pageNum) });
                 break;
             case 1:
                 cursor = db.rawQuery(
-                        "select * from guardianship_tb where row_index<>-1 and page_num = ? order by row_index,column_index",
+                        "select * from guardianship_tb where page_index<>-1 and page_num = ? order by page_index",
                         new String[] { String.valueOf(pageNum) });
                 break;
             default:
                 cursor = db.rawQuery(
-                        "select * from individuality_tb where row_index<>-1 and page_num = ? order by row_index,column_index",
+                        "select * from individuality_tb where page_index<>-1 and page_num = ? order by page_index",
                         new String[] { String.valueOf(pageNum) });
                 break;
         }
@@ -168,8 +160,7 @@ public class dbManager {
             app.setAppIcon(bd);
             app.setPackageName(cursor.getString(cursor.getColumnIndex("package_name")));
             app.setClassName(cursor.getString(cursor.getColumnIndex("class_name")));
-            app.setRowIndex(cursor.getInt(cursor.getColumnIndex("row_index")));
-            app.setColIndex(cursor.getInt(cursor.getColumnIndex("column_index")));
+            app.setIndex(cursor.getInt(cursor.getColumnIndex("page_index")));
             app.setPageNum(cursor.getInt(cursor.getColumnIndex("page_num")));
             apps.add(app);
         }

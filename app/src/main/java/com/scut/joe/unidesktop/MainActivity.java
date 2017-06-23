@@ -40,32 +40,7 @@ public class MainActivity extends AppCompatActivity {
         chooseMode = modePreferences.getInt("choose", -1);
 
         if(chooseMode == -1){
-            Intent startupIntent = new Intent(Intent.ACTION_MAIN);
-            startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-            PackageManager pm = getPackageManager();
-            List<ResolveInfo> activities  = pm.queryIntentActivities(startupIntent, 0);
-            Collections.sort(activities, new Comparator<ResolveInfo>() {
-                @Override
-                public int compare(ResolveInfo a, ResolveInfo b) {
-                    PackageManager pm = getPackageManager();
-                    return String.CASE_INSENSITIVE_ORDER.compare(
-                            a.loadLabel(pm).toString(),
-                            b.loadLabel(pm).toString()
-                    );
-                }
-            });
-            //List<AppItem> list = new ArrayList<AppItem>();
-           // AppItem jcxx = null;
-
-            dbManager manager = new dbManager(mContext);
-            for(int i = 0; i < activities.size(); i++){
-                int pageNum = i/15;
-                int row = i%15/3;
-                int col = i%15%3;
-                ResolveInfo appInfo = activities.get(i);
-                manager.addItem(2,i, appInfo.loadLabel(pm).toString(),appInfo.loadIcon(pm),appInfo.activityInfo.packageName,
-                        appInfo.activityInfo.name,pageNum,row,col);
-            }
+            loadIndividualityInfo();
             dialog();
         }else{
             initDesktop(chooseMode);
@@ -113,4 +88,35 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
+
+    private  void loadIndividualityInfo() {
+        Intent startupIntent = new Intent(Intent.ACTION_MAIN);
+        startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager pm = getPackageManager();
+        List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
+        Collections.sort(activities, new Comparator<ResolveInfo>() {
+            @Override
+            public int compare(ResolveInfo a, ResolveInfo b) {
+                PackageManager pm = getPackageManager();
+                return String.CASE_INSENSITIVE_ORDER.compare(
+                        a.loadLabel(pm).toString(),
+                        b.loadLabel(pm).toString()
+                );
+            }
+        });
+        //List<AppItem> list = new ArrayList<AppItem>();
+        // AppItem jcxx = null;
+
+        dbManager manager = new dbManager(mContext);
+        for (int i = 0; i < activities.size(); i++) {
+            int pageNum = i / 15;
+            int index = i % 15;
+            ResolveInfo appInfo = activities.get(i);
+            manager.addItem(2, i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
+                    appInfo.activityInfo.name, pageNum, index);
+        }
+    }
 }
+

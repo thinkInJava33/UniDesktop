@@ -194,10 +194,20 @@ public class DragAdapter extends BaseAdapter {
 		holdPosition = dropPostion;
 		AppItem dragItem = getItem(dragPostion);
 		AppItem dropItem = getItem(dropPostion);
+		Log.i("test","dragPosiotion"+dragPostion);
+		Log.i("test","dropPosiotion"+dropPostion);
 		dbManager db = new dbManager(context);
 		SharedPreferences modePreferences = context.getSharedPreferences("mode",Context.MODE_PRIVATE);
 		int currentMode = modePreferences.getInt("choose", -1);
-		db.exchange(currentMode, dragItem, dropItem);
+		boolean moveForward = false;
+		//判断移动是否是往前
+		if(dragItem.getIndex()> dropItem.getIndex()){
+			moveForward = true;
+		}
+
+		int dropIndex = getItem(dropPostion).getIndex();
+		dragItem.setIndex(dropIndex);
+
 		Log.d(TAG, "startPostion=" + dragPostion + ";endPosition=" + dropPostion);
 		if (dragPostion < dropPostion) {
 			channelList.add(dropPostion + 1, dragItem);
@@ -205,6 +215,19 @@ public class DragAdapter extends BaseAdapter {
 		} else {
 			channelList.add(dropPostion, dragItem);
 			channelList.remove(dragPostion + 1);
+		}
+		if(moveForward) {
+			for (int i = dropPostion + 1; i <= dragPostion; i++) {
+				AppItem tempItem = getItem(i);
+				tempItem.setIndex(tempItem.getIndex() + 1);
+			}
+			db.exchange(currentMode, dropPostion, dragPostion,channelList);
+		}else{
+			for (int i = dragPostion ; i < dropPostion; i++) {
+				AppItem tempItem = getItem(i);
+				tempItem.setIndex(tempItem.getIndex() - 1);
+			}
+			db.exchange(currentMode, dragPostion, dropPostion,channelList);
 		}
 		isChanged = true;
 		notifyDataSetChanged();
