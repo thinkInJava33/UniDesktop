@@ -18,7 +18,6 @@ public class AppsAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater mInflater;
-    int i =0;
 
     private List<AppItem> mList;
 
