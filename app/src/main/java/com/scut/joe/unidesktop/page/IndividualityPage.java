@@ -31,6 +31,7 @@ import com.scut.joe.unidesktop.adapter.DragAdapter;
 import com.scut.joe.unidesktop.container.DragGrid;
 import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.Common;
+import com.scut.joe.unidesktop.util.FragmentBackHandler;
 import com.scut.joe.unidesktop.util.dbManager;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import java.util.List;
  * Created by joe on 17-6-19.
  */
 
-public class IndividualityPage extends Fragment{
+public class IndividualityPage extends Fragment implements FragmentBackHandler{
     //DragGrid mDragGrid;
     RelativeLayout ll;
     private int pageIndex;
@@ -72,6 +73,13 @@ public class IndividualityPage extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageIndex = (int) getArguments().getSerializable("page_num");
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        Common.isDrag = false;
+        gridview.refresh();
+        return true;
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -112,7 +120,7 @@ public class IndividualityPage extends Fragment{
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        initDate();
+        initData();
 
         ViewTreeObserver vto = gridview.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -128,7 +136,7 @@ public class IndividualityPage extends Fragment{
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void initDate() {
+    private void initData() {
         // TODO Auto-generated method stub
         adapter = new DragAdapter(mContext, getList(), gridview);
         gridview.setRelativeLayout(ll);
