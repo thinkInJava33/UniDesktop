@@ -27,7 +27,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     Context mContext;
     SharedPreferences modePreferences; //保存用户的桌面模式
+    SharedPreferences mode0Info;
+    SharedPreferences mode1Info;
+    SharedPreferences mode2Info;
     SharedPreferences.Editor modeEditor;
+    SharedPreferences.Editor mode0Editor;
+    SharedPreferences.Editor mode1Editor;
+    SharedPreferences.Editor mode2Editor;
     int chooseMode;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +123,12 @@ public class MainActivity extends AppCompatActivity {
             manager.addItem(2, i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
                     appInfo.activityInfo.name, pageNum, index);
         }
+        mode2Info = getSharedPreferences("mode2Info",MODE_PRIVATE);
+        mode2Editor= modePreferences.edit();
+        mode2Editor.putInt("page_num", activities.size()/15);
+        mode2Editor.putInt("page_row", 5);
+        mode2Editor.putInt("page_col", 3);
+        mode2Editor.commit();
     }
 }
 
