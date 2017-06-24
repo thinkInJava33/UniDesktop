@@ -87,9 +87,9 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
 
         View view = inflater.inflate(R.layout.fragment_individuality_page, container, false);
         mContext = getActivity();
-        gridview = (DragGrid)view.findViewById(R.id.gradview);
-        //rl_strues = (RelativeLayout)findViewById(R.id.rl_strues);
         ll = (RelativeLayout)view.findViewById(R.id.ll);
+        gridview = (DragGrid)ll.findViewById(R.id.gradview);
+        //rl_strues = (RelativeLayout)findViewById(R.id.rl_strues);
 
 
         setBackground();
@@ -103,7 +103,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
         // 获取当前壁纸
         Drawable wallpaperDrawable = wallpaperManager.getDrawable();
 
-        gridview.setBackgroundDrawable(wallpaperDrawable);
+        ll.setBackgroundDrawable(wallpaperDrawable);
     }
 
     /**
