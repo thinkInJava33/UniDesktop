@@ -1,4 +1,4 @@
-package com.scut.joe.unidesktop.util;
+package com.scut.joe.unidesktop.apps;
 
 import android.app.Activity;
 

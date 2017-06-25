@@ -1,4 +1,4 @@
-package com.scut.joe.unidesktop.adapter;
+package com.scut.joe.unidesktop.model;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.scut.joe.unidesktop;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.support.v4.app.FragmentTransaction;
@@ -11,23 +11,20 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Window;
 
 import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
 import com.scut.joe.unidesktop.desktop.GuardianshipDesktop;
 import com.scut.joe.unidesktop.desktop.IndividualityDesktop;
-import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.BackHandlerHelper;
 import com.scut.joe.unidesktop.util.dbManager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Context mContext;
+    dbManager manager;
     SharedPreferences modePreferences; //保存用户的桌面模式
     SharedPreferences mode0Info;
     SharedPreferences mode1Info;
@@ -42,18 +39,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mContext = this;
+        manager = new dbManager(mContext);
         modePreferences = getSharedPreferences("mode", Context.MODE_PRIVATE);
 
         setContentView(R.layout.activity_main);
         chooseMode = modePreferences.getInt("choose", -1);
 
         if(chooseMode == -1){
-            loadIndividualityInfo();
             dialog();
+            initInfo(chooseMode);
         }else{
-            initDesktop(chooseMode);
+            //判断模式对应的表是否有数据，没有则加载
+            if(!manager.tableHasData(chooseMode)){
+                initInfo(chooseMode);
+            }
         }
-        
+        initDesktop(chooseMode);
     }
 
     @Override
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 modeEditor = modePreferences.edit();
                 modeEditor.putInt("choose", chooseMode);
                 modeEditor.commit();
-                initDesktop(chooseMode);
             }
         });
         builder.show();
@@ -101,12 +101,39 @@ public class MainActivity extends AppCompatActivity {
                 transaction.replace(R.id.desktop, IndividualityDesktop.newInstance(mContext));
                 transaction.commit();
                 break;
+            default:
+                break;
         }
     }
 
+    private void initInfo(int mode){
+        switch (mode){
+            case 0:
+                initElderlyInfo();
+                break;
+            case 1:
+                initGuardianshipInfo();
+                break;
+            case 2:
+                initIndividualityInfo();
+                break;
+            default:
+                break;
+        }
+    }
 
+    private void initElderlyInfo(){
+        PackageManager packageManager = this.getPackageManager();
+        List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(0);
+        //List<PackageInfo>
+        //for()
+    }
 
-    private  void loadIndividualityInfo() {
+    private void initGuardianshipInfo(){
+        //TODO
+    }
+
+    private void initIndividualityInfo() {
         Intent startupIntent = new Intent(Intent.ACTION_MAIN);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
@@ -124,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         //List<AppItem> list = new ArrayList<AppItem>();
         // AppItem jcxx = null;
 
-        dbManager manager = new dbManager(mContext);
+        //manager = new dbManager(mContext);
         for (int i = 0; i < activities.size(); i++) {
             int pageNum = i / 15;
             int index = i % 15;
@@ -139,5 +166,7 @@ public class MainActivity extends AppCompatActivity {
         mode2Editor.putInt("page_col", 3);
         mode2Editor.commit();
     }
+
+
 }
 

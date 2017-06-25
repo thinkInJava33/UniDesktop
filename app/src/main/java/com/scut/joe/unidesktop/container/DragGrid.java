@@ -32,7 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scut.joe.unidesktop.R;
-import com.scut.joe.unidesktop.adapter.DragAdapter;
+import com.scut.joe.unidesktop.model.DragAdapter;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.DataTools;
 
@@ -227,7 +227,7 @@ public class DragGrid extends GridView {
 						}
 					}
 					else {
-						Log.i("DragGrid------------>>>>>>>>>", "已点击");
+						Log.i("DragGrid---->>>>>>", "已点击");
 					}
 				}
 				else {
@@ -256,8 +256,7 @@ public class DragGrid extends GridView {
 
 	/**
 	 * 删除View动画
-	 * @param adapter 
-	 * @param 需要执行的动画的View
+	 * @param position
 	 */
 	public void DeleteAnimation(final int position)
 	{
@@ -336,8 +335,8 @@ public class DragGrid extends GridView {
 	}
 	/**
 	 * 互相交换的item
-	 * @param position
-	 * @param aimPositin
+	 * @param deletePosition
+	 * @param itemCount
 	 */
 	private void animateReorder(int deletePosition, int itemCount)
 	{

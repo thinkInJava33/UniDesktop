@@ -22,7 +22,7 @@ import java.util.List;
 
 public class dbManager {
     private MyDatabaseHelper mydbHelper;
-    private SQLiteDatabase db;
+    private SQLiteDatabase db = null;
 
     public dbManager(Context context){
         mydbHelper = new MyDatabaseHelper(context, "uniDeskTop.db",
@@ -49,18 +49,7 @@ public class dbManager {
         cv.put("class_name", className);
         cv.put("page_num", pageNum);
         cv.put("page_index", index);
-        switch (mode){
-            case 0:
-                db.insert("elderly_tb",null,cv);
-                break;
-            case 1:
-                db.insert("guardianship _tb",null,cv);
-                break;
-            case 2:
-                db.insert("individuality_tb",null,cv);
-                break;
-        }
-
+        db.insert(mode2tableName(mode),null,cv);
     }
 
     public void hide(int mode,int id){
@@ -70,17 +59,7 @@ public class dbManager {
         String whereClause = "_id=?";
         //修改添加参数
         String[] whereArgs={String.valueOf(id)};
-        switch (mode){
-            case 0:
-                db.update("elderly_tb",cv,whereClause,whereArgs);
-                break;
-            case 1:
-                db.update("guardianship_tb",cv,whereClause,whereArgs);
-                break;
-            case 2:
-                db.update("individuality_tb",cv,whereClause,whereArgs);
-                break;
-        }
+        db.update(mode2tableName(mode),cv,whereClause,whereArgs);
     }
 
     public void delete(int mode, int id){
@@ -88,41 +67,16 @@ public class dbManager {
         String whereClause = "_id=?";
         //修改添加参数
         String[] whereArgs={String.valueOf(id)};
-        switch (mode){
-            case 0:
-                db.delete("elderly_tb",whereClause,whereArgs);
-                break;
-            case 1:
-                db.delete("guardianship_tb",whereClause,whereArgs);
-                break;
-            case 2:
-                db.delete("individuality_tb",whereClause,whereArgs);
-                break;
-        }
-
+        db.delete(mode2tableName(mode),whereClause,whereArgs);
     }
 
     public void exchange(int mode,int start,int end,List<AppItem> apps){
-        String modeString;
-        switch (mode){
-            case 0:
-                modeString  = "elderly_tb";
-                break;
-            case 1:
-                modeString = "guardianship_tb";
-                break;
-            default:
-                modeString = "individuality_tb";
-                break;
-        }
         for(int i = start; i <= end; i++){
             AppItem tempApp = apps.get(i);
             ContentValues cv = new ContentValues();
             cv.put("page_index",tempApp.getIndex());
-            db.update(modeString,cv,"_id = ?",new String[]{String.valueOf(tempApp.getId())});
+            db.update(mode2tableName(mode),cv,"_id = ?",new String[]{String.valueOf(tempApp.getId())});
         }
-
-
     }
 
 
@@ -130,23 +84,9 @@ public class dbManager {
     public List<AppItem> getApps(int mode,int pageNum) {
         ArrayList<AppItem> apps = new ArrayList<>();
         Cursor cursor;
-        switch (mode){
-            case 0:
-                cursor = db.rawQuery(
-                        "select * from elderly_tb where page_index<>-1 and page_num = ? order by page_index",
-                        new String[] { String.valueOf(pageNum) });
-                break;
-            case 1:
-                cursor = db.rawQuery(
-                        "select * from guardianship_tb where page_index<>-1 and page_num = ? order by page_index",
-                        new String[] { String.valueOf(pageNum) });
-                break;
-            default:
-                cursor = db.rawQuery(
-                        "select * from individuality_tb where page_index<>-1 and page_num = ? order by page_index",
-                        new String[] { String.valueOf(pageNum) });
-                break;
-        }
+        cursor = db.rawQuery(
+                "select * from " + mode2tableName(mode) + " where page_index<>-1 and page_num = ? order by page_index",
+                new String[] { String.valueOf(pageNum) });
         while (cursor.moveToNext()) {
             //第一步，从数据库中读取出相应数据，并保存在字节数组中
             byte[] blob = cursor.getBlob(cursor.getColumnIndex("icon"));
@@ -166,7 +106,35 @@ public class dbManager {
         }
         cursor.close();
         return apps;
+    }
 
+    /**
+     * 判断某表是否有数据
+     * @param mode 桌面模式
+     * @return result 表为空时返回false
+     */
+    public boolean tableHasData(int mode){
+        Cursor cursor = null;
+        String sql = "select * from " + mode2tableName(mode);
+        cursor = db.rawQuery(sql, null);
+        return cursor.moveToFirst();
+    }
 
+    public String mode2tableName(int mode){
+        String tableName = null;
+        switch (mode){
+            case 0:
+                tableName  = "elderly_tb";
+                break;
+            case 1:
+                tableName = "guardianship_tb";
+                break;
+            case 2:
+                tableName = "individuality_tb";
+                break;
+            default:
+                break;
+        }
+        return tableName;
     }
 }

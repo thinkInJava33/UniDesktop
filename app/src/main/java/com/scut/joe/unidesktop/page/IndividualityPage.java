@@ -5,11 +5,6 @@ import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,26 +12,21 @@ import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.scut.joe.unidesktop.R;
-import com.scut.joe.unidesktop.adapter.DragAdapter;
+import com.scut.joe.unidesktop.model.DragAdapter;
 import com.scut.joe.unidesktop.container.DragGrid;
 import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.FragmentBackHandler;
 import com.scut.joe.unidesktop.util.dbManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**

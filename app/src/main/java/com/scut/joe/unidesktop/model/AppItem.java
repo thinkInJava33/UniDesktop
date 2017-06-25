@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
  */
 
 public class AppItem {
-    //private static int appCount = 0;
     private int id;
     private String appName;
     private Drawable appIcon;
@@ -19,14 +18,15 @@ public class AppItem {
 
     public AppItem(){}
 
-    public AppItem(int id,String appName, Drawable appIcon,String packageName,String className){
-        setAppIcon(appIcon);
-        setAppName(appName);
-        setPackageName(packageName);
-        setClassName(className);
-        setId(id);
+    public AppItem(int id, String appName, Drawable appIcon, String packageName, String className, int pageNum, int index) {
+        this.id = id;
+        this.appName = appName;
+        this.appIcon = appIcon;
+        this.packageName = packageName;
+        this.className = className;
+        this.pageNum = pageNum;
+        this.index = index;
     }
-
 
     public int getId() {
         return id;
