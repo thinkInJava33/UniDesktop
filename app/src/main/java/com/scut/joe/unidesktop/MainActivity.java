@@ -1,6 +1,8 @@
 package com.scut.joe.unidesktop;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -11,13 +13,17 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Window;
 
 import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
 import com.scut.joe.unidesktop.desktop.GuardianshipDesktop;
 import com.scut.joe.unidesktop.desktop.IndividualityDesktop;
+import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.BackHandlerHelper;
 import com.scut.joe.unidesktop.util.dbManager;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -153,9 +159,25 @@ public class MainActivity extends AppCompatActivity {
 
         //manager = new dbManager(mContext);
         for (int i = 0; i < activities.size(); i++) {
-            int pageNum = i / 15;
-            int index = i % 15;
+            int pageNum = i / 12;
+            int index = i % 12;
             ResolveInfo appInfo = activities.get(i);
+            if(appInfo.activityInfo.packageName.equals("com.android.dialer")) {
+                pageNum = -1;
+                index = 0;
+            }
+            if(appInfo.activityInfo.packageName.equals("com.android.contacts")){
+                pageNum = -1;
+                index = 1;
+            }
+            if(appInfo.activityInfo.packageName.equals("com.android.mms")){
+                pageNum = -1;
+                index = 2;
+            }
+            if(appInfo.activityInfo.packageName .equals("com.android.browser")){
+                pageNum = -1;
+                index = 3;
+            }
             manager.addItem(2, i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
                     appInfo.activityInfo.name, pageNum, index);
         }
@@ -166,7 +188,5 @@ public class MainActivity extends AppCompatActivity {
         mode2Editor.putInt("page_col", 3);
         mode2Editor.commit();
     }
-
-
 }
 

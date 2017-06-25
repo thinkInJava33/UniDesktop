@@ -82,7 +82,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
         //rl_strues = (RelativeLayout)findViewById(R.id.rl_strues);
 
 
-        setBackground();
+        //setBackground();
 
         return view;
     }
