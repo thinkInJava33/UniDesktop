@@ -47,7 +47,7 @@ public class ElderlyDesktop extends Desktop {
 
             @Override
             public int getCount() {
-                return 3;
+                return 1;
             }
         });
 

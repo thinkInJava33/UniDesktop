@@ -1,9 +1,8 @@
 package com.scut.joe.unidesktop;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -13,22 +12,23 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Window;
+
 
 import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
 import com.scut.joe.unidesktop.desktop.GuardianshipDesktop;
 import com.scut.joe.unidesktop.desktop.IndividualityDesktop;
-import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.BackHandlerHelper;
 import com.scut.joe.unidesktop.util.dbManager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int NOT_CHOOSE_MODE = -1;
+    public static final int ELDERLY_MODE = 0;
+    public static final int GUARDIANSHIP_MODE = 1;
+    public static final int INDIVIDUALITY_MODE = 2;
     Context mContext;
     dbManager manager;
     SharedPreferences modePreferences; //保存用户的桌面模式
@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
         modePreferences = getSharedPreferences("mode", Context.MODE_PRIVATE);
 
         setContentView(R.layout.activity_main);
-        chooseMode = modePreferences.getInt("choose", -1);
+        chooseMode = modePreferences.getInt("choose", NOT_CHOOSE_MODE);
 
-        if(chooseMode == -1){
+        if(chooseMode == NOT_CHOOSE_MODE){
             dialog();
             initInfo(chooseMode);
         }else{
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void dialog(){
-        chooseMode = 0;
+        chooseMode = ELDERLY_MODE;
         final String modes[] = {"老人模式", "监护模式", "个性模式"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("选择桌面模式");
@@ -95,15 +95,15 @@ public class MainActivity extends AppCompatActivity {
     private void initDesktop(int chooseMode){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (chooseMode){
-            case 0:
+            case ELDERLY_MODE:
                 transaction.replace(R.id.desktop, ElderlyDesktop.newInstance(mContext));
                 transaction.commit();
                 break;
-            case 1:
+            case GUARDIANSHIP_MODE:
                 transaction.replace(R.id.desktop, GuardianshipDesktop.newInstance(mContext));
                 transaction.commit();
                 break;
-            case 2:
+            case INDIVIDUALITY_MODE:
                 transaction.replace(R.id.desktop, IndividualityDesktop.newInstance(mContext));
                 transaction.commit();
                 break;
@@ -114,13 +114,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void initInfo(int mode){
         switch (mode){
-            case 0:
+            case ELDERLY_MODE:
                 initElderlyInfo();
                 break;
-            case 1:
+            case GUARDIANSHIP_MODE:
                 initGuardianshipInfo();
                 break;
-            case 2:
+            case INDIVIDUALITY_MODE:
                 initIndividualityInfo();
                 break;
             default:
@@ -129,10 +129,79 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initElderlyInfo(){
-        PackageManager packageManager = this.getPackageManager();
-        List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(0);
-        //List<PackageInfo>
-        //for()
+        String tempPackageName = null;
+        String tempClassName = null;
+        int id = 0;
+        Intent startupIntent = new Intent(Intent.ACTION_MAIN);
+        startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager pm = this.getPackageManager();
+        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(startupIntent, 0);
+        for(ResolveInfo resolveInfo: resolveInfos){
+            tempPackageName = resolveInfo.activityInfo.packageName;
+            tempClassName = resolveInfo.activityInfo.name;
+            if(tempPackageName.contains("clock") && tempPackageName.contains("android")){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        this.getResources().getDrawable(R.drawable.clock_icon),
+                        tempPackageName, tempClassName, 0, 0);
+            }
+            else if(tempPackageName.contains("calendar") && tempPackageName.contains("android")){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        this.getResources().getDrawable(R.drawable.calendar_icon),
+                        tempPackageName, tempClassName, 0, 1);
+            }
+            else if(tempPackageName.contains("gallery") && tempPackageName.contains("android")){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        this.getResources().getDrawable(R.drawable.photo_icon),
+                        tempPackageName, tempClassName, 0, 2);
+            }
+            else if(tempPackageName.contains("camera") && tempPackageName.contains("android")){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        this.getResources().getDrawable(R.drawable.camera_icon),
+                        tempPackageName, tempClassName, 0, 3);
+            }
+            else if(tempPackageName.contains("browser") && tempPackageName.contains("android")){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        this.getResources().getDrawable(R.drawable.web_icon),
+                        tempPackageName, tempClassName, 0, 4);
+            }
+        }
+        manager.addItem(ELDERLY_MODE, id++, "weather", this.getResources().getDrawable(R.drawable.weather_icon),
+                "com.scut.joe.unidesktop", ".apps.weatheractivity", 0, 5);
+        manager.addItem(ELDERLY_MODE, id++, "message", this.getResources().getDrawable(R.drawable.weather_icon),
+                "com.scut.joe.unidesktop", ".apps.messageactivity", 0, 6);
+        manager.addItem(ELDERLY_MODE, id++, "phone", this.getResources().getDrawable(R.drawable.weather_icon),
+                "com.scut.joe.unidesktop", ".apps.phoneactivity", 0, 7);
+        manager.addItem(ELDERLY_MODE, id++, "contacts", this.getResources().getDrawable(R.drawable.weather_icon),
+                "com.scut.joe.unidesktop", ".apps.contactsactivity", 0, 8);
+        mode0Info = getSharedPreferences("mode0Info",MODE_PRIVATE);
+        mode0Editor= mode0Info.edit();
+        mode0Editor.putInt("page_num", 1);
+        mode0Editor.putInt("page_row", 4);
+        mode0Editor.putInt("page_col", 2);
+        mode0Editor.commit();
+        /**
+        List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(packageManager.GET_ACTIVITIES);
+        for(PackageInfo packageInfo: packageInfoList){
+            if(isSystemApplication(packageInfo.applicationInfo)
+                    && packageInfo.packageName.contains("clock")){
+                manager.addItem(ELDERLY_MODE, id++, packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
+                        packageManager.getApplicationIcon(packageInfo.applicationInfo),
+                        packageInfo.packageName, packageInfo.a);
+            }
+        }**/
+
+    }
+
+    /**
+     *
+     * @param applicationInfo
+     * @return 是否为系统应用
+     */
+    private boolean isSystemApplication(ApplicationInfo applicationInfo){
+        if(applicationInfo != null){
+            return ((applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)!= 0
+            || (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0)? true : false;
+        }else return false;
     }
 
     private void initGuardianshipInfo(){
@@ -178,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 pageNum = -1;
                 index = 3;
             }
-            manager.addItem(2, i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
+            manager.addItem(INDIVIDUALITY_MODE, i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
                     appInfo.activityInfo.name, pageNum, index);
         }
         mode2Info = getSharedPreferences("mode2Info",MODE_PRIVATE);
