@@ -3,7 +3,6 @@ package com.scut.joe.unidesktop;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 
 import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
@@ -53,14 +53,16 @@ public class MainActivity extends AppCompatActivity {
 
         if(chooseMode == NOT_CHOOSE_MODE){
             dialog();
-            initInfo(chooseMode);
+            Log.v("test", "dialog加载");
         }else{
             //判断模式对应的表是否有数据，没有则加载
             if(!manager.tableHasData(chooseMode)){
                 initInfo(chooseMode);
+                Log.v("test", "二次initInfo加载");
             }
+            initDesktop(chooseMode);
+            Log.v("test", "initDesktop加载");
         }
-        initDesktop(chooseMode);
     }
 
     @Override
@@ -87,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
                 modeEditor = modePreferences.edit();
                 modeEditor.putInt("choose", chooseMode);
                 modeEditor.commit();
+                initInfo(chooseMode);
+                Log.v("test", "initInfo加载");
+                initDesktop(chooseMode);
+                Log.v("test", "initDesktop加载");
             }
         });
         builder.show();
