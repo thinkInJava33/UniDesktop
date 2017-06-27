@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.provider.Contacts;
 
 import java.util.List;
 
@@ -75,6 +76,21 @@ public class Check {
         intent.addCategory("android.intent.category.BROWSABLE");
         Uri uri = Uri.parse("http://");
         intent.setDataAndType(uri, null);
+        List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,
+                PackageManager.GET_RESOLVED_FILTER);
+        if(packageName.equals(list.get(0).activityInfo.packageName)
+                && className.equals(list.get(0).activityInfo.name)){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isContacts(ResolveInfo info, Context context){
+        String packageName = info.activityInfo.packageName;
+        String className = info.activityInfo.name;
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Contacts.People.CONTENT_URI);
         List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,
                 PackageManager.GET_RESOLVED_FILTER);
         if(packageName.equals(list.get(0).activityInfo.packageName)
