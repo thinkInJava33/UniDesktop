@@ -4,6 +4,10 @@
     <string name="app_name">UniDeskTop</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="weather_name">天气</string>
+    <string name="message_name">短信</string>
+    <string name="contacts_name">联系人</string>
+    <string name="phone_name">电话</string>
     <string name="home">快捷菜单</string>
     <string name="search_hint">请输入想要查询的内容</string>
 </resources>

@@ -267,10 +267,10 @@ public class DragGrid extends GridView {
 
 		final ImageView imageView = new ImageView(mContext);
 		imageView.setImageBitmap(bitmap);
-		imageView.setLayoutParams(new LayoutParams((int) (Common.Width / 7),
+		imageView.setLayoutParams(new RelativeLayout.LayoutParams((int) (Common.Width / 7),
 				(int) (Common.Width / 7)));
 
-		LayoutParams ivlp = new LayoutParams(LayoutParams.WRAP_CONTENT,
+		RelativeLayout.LayoutParams ivlp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT);
 		
 		final int aimPosit = getCount() - 1;

@@ -35,14 +35,13 @@ public class ElderlyDesktop extends Desktop {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Log.i("test", "this is elderlyDesktop");
-        View view = inflater.inflate(R.layout.fragment_desktop, container, false);
+        View view = inflater.inflate(R.layout.fragment_elderly_desktop, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.container);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-
-                return ElderlyPage.newInstance(position);
+                return ElderlyPage.newInstance(0);
             }
 
             @Override
@@ -51,7 +50,7 @@ public class ElderlyDesktop extends Desktop {
             }
         });
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     @Override

@@ -12,14 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.model.DragAdapter;
 import com.scut.joe.unidesktop.container.DragGrid;
+import com.scut.joe.unidesktop.model.IconAdapter;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.FragmentBackHandler;
 import com.scut.joe.unidesktop.util.dbManager;
@@ -34,7 +35,7 @@ import java.util.List;
 public class ElderlyPage extends Fragment implements FragmentBackHandler{
     RelativeLayout rl;
     private int pageIndex;
-    private DragAdapter adapter;
+    private IconAdapter adapter;
     private DragGrid dragGrid;
     private Context mContext;
 
@@ -66,16 +67,28 @@ public class ElderlyPage extends Fragment implements FragmentBackHandler{
     public void onResume() {
         super.onResume();
         initData();
+
+        ViewTreeObserver vto = dragGrid.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+                // TODO Auto-generated method stub
+                dragGrid.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                height = dragGrid.getHeight();
+            }
+        });
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_elderly_page, container, false);
         mContext = getActivity();
-        dragGrid = (DragGrid)view.findViewById(R.id.grad_view);
         rl = (RelativeLayout)view.findViewById(R.id.rl);
-        
+        dragGrid = (DragGrid)rl.findViewById(R.id.grad_view);
+
         return view;
     }
 
@@ -95,12 +108,13 @@ public class ElderlyPage extends Fragment implements FragmentBackHandler{
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         Common.Width = metrics.widthPixels;
         Common.Height = metrics.heightPixels;
+        Log.v("test", "width: "+ Common.Width+" height: " + Common.Height);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void initData() {
         // TODO Auto-generated method stub
-        adapter = new DragAdapter(mContext, getList(), dragGrid);
+        adapter = new IconAdapter(mContext, getList(), dragGrid);
         dragGrid.setRelativeLayout(rl);
         dragGrid.setAdapter(adapter);
         dragGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -113,9 +127,7 @@ public class ElderlyPage extends Fragment implements FragmentBackHandler{
                 }
                 AppItem dragView = (AppItem)parent.getItemAtPosition(position);
                 ComponentName componentName = new ComponentName(dragView.getPackageName(),dragView.getClassName());
-                Intent i = new Intent(Intent.ACTION_MAIN)
-                        .setComponent(componentName)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent i = new Intent().setComponent(componentName);
 
                 startActivity(i);
             }
@@ -127,6 +139,9 @@ public class ElderlyPage extends Fragment implements FragmentBackHandler{
         dbManager manager = new dbManager(getActivity());
         Log.i("test","pageNum : "+pageIndex);
         List<AppItem> list = manager.getApps(0,pageIndex);
+        for(AppItem appItem:list){
+            Log.v("test", " "+ appItem.getAppName());
+        }
         return list;
     }
 }

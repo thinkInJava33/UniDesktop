@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 
+import com.scut.joe.unidesktop.controll.Check;
 import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
 import com.scut.joe.unidesktop.desktop.GuardianshipDesktop;
 import com.scut.joe.unidesktop.desktop.IndividualityDesktop;
@@ -147,69 +148,46 @@ public class MainActivity extends AppCompatActivity {
         for(ResolveInfo resolveInfo: resolveInfos){
             tempPackageName = resolveInfo.activityInfo.packageName;
             tempClassName = resolveInfo.activityInfo.name;
-            if(tempPackageName.contains("clock") && tempPackageName.contains("android")){
+            if(Check.isSystemClock(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         this.getResources().getDrawable(R.drawable.clock_icon),
                         tempPackageName, tempClassName, 0, 0);
             }
-            else if(tempPackageName.contains("calendar") && tempPackageName.contains("android")){
+            else if(Check.isSystemCalendar(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         this.getResources().getDrawable(R.drawable.calendar_icon),
                         tempPackageName, tempClassName, 0, 1);
             }
-            else if(tempPackageName.contains("gallery") && tempPackageName.contains("android")){
+            else if(Check.isSystemGallery(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         this.getResources().getDrawable(R.drawable.photo_icon),
                         tempPackageName, tempClassName, 0, 2);
             }
-            else if(tempPackageName.contains("camera") && tempPackageName.contains("android")){
+            else if(Check.isSystemCamera(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         this.getResources().getDrawable(R.drawable.camera_icon),
                         tempPackageName, tempClassName, 0, 3);
             }
-            else if(tempPackageName.contains("browser") && tempPackageName.contains("android")){
+            else if(Check.isBrowser(resolveInfo, mContext)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         this.getResources().getDrawable(R.drawable.web_icon),
                         tempPackageName, tempClassName, 0, 4);
             }
         }
         manager.addItem(ELDERLY_MODE, id++, "weather", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", ".apps.weatheractivity", 0, 5);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.WeatherActivity", 0, 5);
         manager.addItem(ELDERLY_MODE, id++, "message", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", ".apps.messageactivity", 0, 6);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.MessageActivity", 0, 6);
         manager.addItem(ELDERLY_MODE, id++, "phone", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", ".apps.phoneactivity", 0, 7);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.PhoneActivity", 0, 7);
         manager.addItem(ELDERLY_MODE, id++, "contacts", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", ".apps.contactsactivity", 0, 8);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", 0, 8);
         mode0Info = getSharedPreferences("mode0Info",MODE_PRIVATE);
         mode0Editor= mode0Info.edit();
         mode0Editor.putInt("page_num", 1);
         mode0Editor.putInt("page_row", 4);
         mode0Editor.putInt("page_col", 2);
         mode0Editor.commit();
-        /**
-        List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(packageManager.GET_ACTIVITIES);
-        for(PackageInfo packageInfo: packageInfoList){
-            if(isSystemApplication(packageInfo.applicationInfo)
-                    && packageInfo.packageName.contains("clock")){
-                manager.addItem(ELDERLY_MODE, id++, packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
-                        packageManager.getApplicationIcon(packageInfo.applicationInfo),
-                        packageInfo.packageName, packageInfo.a);
-            }
-        }**/
-
-    }
-
-    /**
-     *
-     * @param applicationInfo
-     * @return 是否为系统应用
-     */
-    private boolean isSystemApplication(ApplicationInfo applicationInfo){
-        if(applicationInfo != null){
-            return ((applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)!= 0
-            || (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0)? true : false;
-        }else return false;
     }
 
     private void initGuardianshipInfo(){
@@ -251,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 pageNum = -1;
                 index = 2;
             }
-            if(appInfo.activityInfo.packageName .equals("com.android.browser")){
+            if(Check.isBrowser(appInfo, mContext)){
                 pageNum = -1;
                 index = 3;
             }
