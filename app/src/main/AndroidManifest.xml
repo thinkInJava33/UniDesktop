@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.scut.joe.unidesktop">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.scut.joe.unidesktop">
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        tools:replace="Android:icon, android:theme"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,6 +22,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".apps.SearchActivity"
+                  android:theme="@style/TransparentStyleBottom" >
+
         </activity>
     </application>
 

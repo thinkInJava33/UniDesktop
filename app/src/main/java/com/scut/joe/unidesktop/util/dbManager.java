@@ -70,6 +70,34 @@ public class dbManager {
         db.delete(mode2tableName(mode),whereClause,whereArgs);
     }
 
+    public List<AppItem> search(int mode,String key){
+        ArrayList<AppItem> apps = new ArrayList<>();
+        Cursor cursor;
+        cursor = db.rawQuery("select * from " + mode2tableName(mode) + " where page_index<>-1",
+                null);
+        while(cursor.moveToNext()){
+            if(cursor.getString(cursor.getColumnIndex("name")).toLowerCase().indexOf(key.toLowerCase()) != -1){
+                AppItem app = new AppItem();
+                //第一步，从数据库中读取出相应数据，并保存在字节数组中
+                byte[] blob = cursor.getBlob(cursor.getColumnIndex("icon"));
+                //第二步，调用BitmapFactory的解码方法decodeByteArray把字节数组转换为Bitmap对象
+                Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+                //第三步，调用BitmapDrawable构造函数生成一个BitmapDrawable对象，该对象继承Drawable对象，所以在需要处直接使用该对象即可
+                BitmapDrawable bd = new BitmapDrawable(bmp);
+                app.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+                app.setAppName(cursor.getString(cursor.getColumnIndex("name")));
+                app.setAppIcon(bd);
+                app.setPackageName(cursor.getString(cursor.getColumnIndex("package_name")));
+                app.setClassName(cursor.getString(cursor.getColumnIndex("class_name")));
+                app.setIndex(cursor.getInt(cursor.getColumnIndex("page_index")));
+                app.setPageNum(cursor.getInt(cursor.getColumnIndex("page_num")));
+                apps.add(app);
+            }
+        }
+        cursor.close();
+        return apps;
+    }
+
     public void exchange(int mode,int start,int end,List<AppItem> apps){
         for(int i = start; i <= end; i++){
             AppItem tempApp = apps.get(i);

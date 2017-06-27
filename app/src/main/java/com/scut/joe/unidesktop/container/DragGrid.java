@@ -238,7 +238,6 @@ public class DragGrid extends GridView {
 		return super.onInterceptTouchEvent(ev);
 	}
 
-
 	/**
 	 * 删除动画
 	 * @param position
@@ -439,6 +438,7 @@ public class DragGrid extends GridView {
 				windowX = (int) ev.getX();
 				downY = (int) ev.getY();
 				windowY = (int) ev.getY();
+				Log.i("test","grid down");
 				break;
 			case MotionEvent.ACTION_MOVE:
 				onDrag(x, y ,(int) ev.getRawX() , (int) ev.getRawY());
@@ -448,10 +448,12 @@ public class DragGrid extends GridView {
 				if (pointToPosition(x, y) != AdapterView.INVALID_POSITION){
 					break;
 				}
+				Log.i("test","grid move");
 				break;
 			case MotionEvent.ACTION_UP:
 				stopDrag();
 				onDrop(x, y);
+				Log.i("test","grid up");
 				requestDisallowInterceptTouchEvent(false);
 				break;
 

@@ -103,7 +103,7 @@ public class IndividualityDesktop extends Desktop {
 
     @Override
     public void hideApp() {
-
+        //complete
     }
 
     @Override
@@ -128,7 +128,7 @@ public class IndividualityDesktop extends Desktop {
 
     @Override
     public void moveApp() {
-
+        //completed
     }
 
     private void initDensityDpi() {

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.scut.joe.unidesktop.R;
+import com.scut.joe.unidesktop.apps.SearchActivity;
 import com.scut.joe.unidesktop.model.DragAdapter;
 import com.scut.joe.unidesktop.container.DragGrid;
 import com.scut.joe.unidesktop.model.AppItem;
@@ -40,6 +42,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
     private DragAdapter adapter;
     private DragGrid gridview;
     private Context mContext;
+    float mPosX = 0, mPosY = 0 , mCurPosX = 0, mCurPosY = 0;
     //顶部导航的高度
     //public static int StruesHeight;
     /**
@@ -80,20 +83,38 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
         ll = (RelativeLayout)view.findViewById(R.id.ll);
         gridview = (DragGrid)ll.findViewById(R.id.gradview);
         //rl_strues = (RelativeLayout)findViewById(R.id.rl_strues);
+        ll.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
 
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mPosX = event.getX();
+                        mPosY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        mCurPosX = event.getX();
+                        mCurPosY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (mCurPosY - mPosY > 0
+                                && (Math.abs(mCurPosY - mPosY) > 20)) {
+                            //向下滑動
+                            Intent searchIntent = new Intent(getActivity(), SearchActivity.class);
+                            startActivity(searchIntent);
+                        } else if (mCurPosY - mPosY < 0
+                                && (Math.abs(mCurPosY - mPosY) > 25)) {
+                            //向上滑动
 
+                        }
+
+                        break;
+                }
+                return true;
+            }
+        });
         //setBackground();
-
         return view;
-    }
-
-    private void setBackground(){
-        WallpaperManager wallpaperManager = WallpaperManager
-                .getInstance(mContext);
-        // 获取当前壁纸
-        Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-
-        ll.setBackgroundDrawable(wallpaperDrawable);
     }
 
     /**
@@ -145,7 +166,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
                 Intent i = new Intent(Intent.ACTION_MAIN)
                         .setComponent(componentName)
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+                Log.i("test","click");
                 startActivity(i);
 
                 if (!dragView.getAppName().equals("更多")) {

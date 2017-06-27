@@ -2,11 +2,20 @@ package com.scut.joe.unidesktop.model;
 
 import java.util.List;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -101,8 +110,19 @@ public class DragAdapter extends BaseAdapter {
 			view.setTag(holderView);
 		}
 		holderView = (HolderView)view.getTag();
-		final AppItem iconInfo = getItem(position);
-		holderView.iv_icon.setImageDrawable(iconInfo.getAppIcon());
+		AppItem iconInfo = getItem(position);
+		Drawable drawable = iconInfo.getAppIcon();
+		Bitmap srcBmp = ((BitmapDrawable) drawable).getBitmap();
+		Bitmap destBmp = srcBmp.copy(srcBmp.getConfig(), true);
+		Drawable darkDrawable = new BitmapDrawable(destBmp);
+		darkDrawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+		StateListDrawable stateListDrawable = new StateListDrawable();
+		stateListDrawable.addState(new int[] {android.R.attr.state_pressed}, darkDrawable);
+		stateListDrawable.addState(new int[]{},drawable);
+		holderView.iv_icon.setImageDrawable(stateListDrawable);
+		notifyDataSetChanged();
+
+
 		holderView.item_text.setText(iconInfo.getAppName());
 		holderView.iv_delete.setOnClickListener(new OnClickListener() {
 
