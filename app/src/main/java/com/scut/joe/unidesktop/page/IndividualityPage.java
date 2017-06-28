@@ -83,37 +83,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
         ll = (RelativeLayout)view.findViewById(R.id.ll);
         gridview = (DragGrid)ll.findViewById(R.id.gradview);
         //rl_strues = (RelativeLayout)findViewById(R.id.rl_strues);
-        ll.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
 
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        mPosX = event.getX();
-                        mPosY = event.getY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        mCurPosX = event.getX();
-                        mCurPosY = event.getY();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if (mCurPosY - mPosY > 0
-                                && (Math.abs(mCurPosY - mPosY) > 20)) {
-                            //向下滑動
-                            Intent searchIntent = new Intent(getActivity(), SearchActivity.class);
-                            startActivity(searchIntent);
-                        } else if (mCurPosY - mPosY < 0
-                                && (Math.abs(mCurPosY - mPosY) > 25)) {
-                            //向上滑动
-
-                        }
-
-                        break;
-                }
-                return true;
-            }
-        });
-        //setBackground();
         return view;
     }
 
