@@ -9,6 +9,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Vibrator;
@@ -32,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scut.joe.unidesktop.R;
+import com.scut.joe.unidesktop.apps.SearchActivity;
 import com.scut.joe.unidesktop.model.DragAdapter;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.DataTools;
@@ -52,6 +54,8 @@ public class DragGrid extends GridView {
 	public int windowX;
 	/** 点击时候对应整个界面的Y位置 */
 	public int windowY;
+	/** 下划处理 */
+	float mPosX = 0, mPosY = 0 , mCurPosX = 0, mCurPosY = 0;
 	/** 屏幕上的X */
 	private int win_view_x;
 	/** 屏幕上的Y*/
@@ -88,6 +92,8 @@ public class DragGrid extends GridView {
 	private int Remainder;
 	/** 是否在移动 */
 	private boolean isMoving = false;
+	/** 之前是否在移动 */
+	private boolean wasMoving = false;
 	/** */
 	private int holdPosition;
 	/** 拖动的时候放大的倍数 */
@@ -221,6 +227,7 @@ public class DragGrid extends GridView {
 								hideDropItem();
 								dragViewGroup.setVisibility(View.INVISIBLE);
 								isMoving = false;
+								wasMoving = false;
 								requestDisallowInterceptTouchEvent(true);
 								return true;
 							}
@@ -428,6 +435,33 @@ public class DragGrid extends GridView {
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		// TODO Auto-generated method stub
+		switch (ev.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				mPosX = ev.getX();
+				mPosY = ev.getY();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				mCurPosX = ev.getX();
+				mCurPosY = ev.getY();
+				break;
+			case MotionEvent.ACTION_UP:
+				if (mCurPosY - mPosY > 0
+						&& (Math.abs(mCurPosY - mPosY) > 25)
+						&& (Math.abs(mCurPosX - mPosX) < 200)) {
+					//向下滑動
+					if(!wasMoving) {
+						Intent searchIntent = new Intent(mContext, SearchActivity.class);
+						mContext.startActivity(searchIntent);
+					}
+				} else if (mCurPosY - mPosY < 0
+						&& (Math.abs(mCurPosY - mPosY) > 25)) {
+					//向上滑动
+
+				}
+				wasMoving = false;
+				break;
+		}
+
 		if (dragImageView != null && dragPosition != AdapterView.INVALID_POSITION) {
 			// 移动时候的对应x,y位置
 			int x = (int) ev.getX();
@@ -552,6 +586,7 @@ public class DragGrid extends GridView {
 					hideDropItem();
 					dragViewGroup.setVisibility(View.INVISIBLE);
 					isMoving = false;
+					wasMoving = false;
 					requestDisallowInterceptTouchEvent(true);
 					return true;
 				}
@@ -625,7 +660,7 @@ public class DragGrid extends GridView {
 		// 拖动的VIEW下方的POSTION
 		int dPosition = pointToPosition(x, y);
 		// 判断下方的POSTION是否是最开始2个不能拖动的
-		if (dPosition < getCount() - 1) {
+		if (dPosition <= getCount() - 1) {
 			if ((dPosition == -1) || (dPosition == dragPosition)){
 				return;
 			}
@@ -703,6 +738,7 @@ public class DragGrid extends GridView {
 						public void onAnimationStart(Animation animation) {
 							// TODO Auto-generated method stub
 							isMoving = true;
+							wasMoving = true;
 						}
 
 						@Override
