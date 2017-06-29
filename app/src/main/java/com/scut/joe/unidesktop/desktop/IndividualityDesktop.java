@@ -30,6 +30,7 @@ import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.page.ElderlyPage;
 import com.scut.joe.unidesktop.page.IndividualityPage;
 import com.scut.joe.unidesktop.util.Common;
+import com.scut.joe.unidesktop.util.FragmentBackHandler;
 import com.scut.joe.unidesktop.util.dbManager;
 
 import java.util.List;
@@ -40,7 +41,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by joe on 17-6-16.
  */
 
-public class IndividualityDesktop extends Desktop {
+public class IndividualityDesktop extends Desktop implements FragmentBackHandler{
     private static Context mContext;
     private View v;
     ViewPager viewPager;
@@ -89,6 +90,14 @@ public class IndividualityDesktop extends Desktop {
         });
 
         return v;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        Common.isDrag = false;
+        mToolBar.refresh();
+        Log.v("test", "desktop onBackPressed");
+        return true;
     }
 
     @Override

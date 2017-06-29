@@ -73,6 +73,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
     public boolean onBackPressed() {
         Common.isDrag = false;
         gridview.refresh();
+        Log.v("test", "page onBackPressed");
         return true;
     }
 

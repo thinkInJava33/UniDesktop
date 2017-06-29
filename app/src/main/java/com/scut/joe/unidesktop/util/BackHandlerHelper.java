@@ -3,6 +3,7 @@ package com.scut.joe.unidesktop.util;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class BackHandlerHelper {
             Fragment child = fragments.get(i);
 
             if(isFragmentBackHandled(child)){
+                Log.v("test", "count: "+ i+ "  " + child.toString());
                 return true;
             }
         }

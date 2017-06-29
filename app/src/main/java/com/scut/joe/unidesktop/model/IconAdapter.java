@@ -2,6 +2,7 @@ package com.scut.joe.unidesktop.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -106,6 +107,7 @@ public class IconAdapter extends BaseAdapter {
         final AppItem iconInfo = getItem(position);
         holderView.iv_icon.setImageDrawable(iconInfo.getAppIcon());
         //holderView.item_text.setText(iconInfo.getAppName());
+        Common.changeAppBackground(((BitmapDrawable)iconInfo.getAppIcon()).getBitmap(), view);
         holderView.iv_delete.setOnClickListener(new View.OnClickListener() {
 
             @Override
