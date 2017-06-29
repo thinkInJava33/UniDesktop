@@ -17,20 +17,21 @@ public class BackHandlerHelper {
      */
     public static boolean handleBackPress(FragmentManager fragmentManager){
         List<Fragment> fragments = fragmentManager.getFragments();
-        if(fragments == null) return false;
+        boolean isHandle = false;
+        if(fragments == null) return isHandle;
         for(int i = fragments.size() - 1; i>=0; i--){
             Fragment child = fragments.get(i);
 
             if(isFragmentBackHandled(child)){
                 Log.v("test", "count: "+ i+ "  " + child.toString());
-                return true;
+                isHandle = true;
             }
         }
         if(fragmentManager.getBackStackEntryCount() > 0){
             fragmentManager.popBackStack();
-            return true;
+            isHandle = true;
         }
-        return false;
+        return isHandle;
     }
     public static boolean handleBackPress(Fragment fragment) {
         return handleBackPress(fragment.getChildFragmentManager());
