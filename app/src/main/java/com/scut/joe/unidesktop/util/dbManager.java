@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.scut.joe.unidesktop.model.AppItem;
 
@@ -50,6 +49,32 @@ public class dbManager {
         cv.put("page_num", pageNum);
         cv.put("page_index", index);
         db.insert(mode2tableName(mode),null,cv);
+    }
+
+    public void addItems(List<AppItem> items, int mode){
+        db.beginTransaction();
+        try{
+            for(AppItem item:items){
+                Bitmap bmp = ((BitmapDrawable)item.getAppIcon()).getBitmap();
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+                ContentValues cv=new ContentValues();
+
+                cv.put("_id", item.getId());
+                cv.put("name", item.getAppName());
+                cv.put("icon", os.toByteArray());
+                cv.put("package_name", item.getPackageName());
+                cv.put("class_name", item.getClassName());
+                cv.put("page_num", item.getPageNum());
+                cv.put("page_index", item.getIndex());
+                db.insert(mode2tableName(mode),null,cv);
+            }
+            db.setTransactionSuccessful();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            db.endTransaction();
+        }
     }
 
     public void hide(int mode,int id){

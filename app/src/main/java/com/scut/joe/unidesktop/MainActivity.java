@@ -2,11 +2,8 @@ package com.scut.joe.unidesktop;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.provider.Contacts;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,9 +17,11 @@ import com.scut.joe.unidesktop.controll.Check;
 import com.scut.joe.unidesktop.desktop.ElderlyDesktop;
 import com.scut.joe.unidesktop.desktop.GuardianshipDesktop;
 import com.scut.joe.unidesktop.desktop.IndividualityDesktop;
+import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.BackHandlerHelper;
 import com.scut.joe.unidesktop.util.dbManager;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -92,10 +91,14 @@ public class MainActivity extends AppCompatActivity {
                 modeEditor = modePreferences.edit();
                 modeEditor.putInt("choose", chooseMode);
                 modeEditor.commit();
+                long startTime = System.nanoTime();
                 initInfo(chooseMode);
-                Log.v("test", "initInfo加载");
+                long costTime = System.nanoTime() - startTime;
+                Log.v("timeTest", "initInfo加载耗时： "+ costTime/1000000 + "毫秒");
+                startTime = System.nanoTime();
                 initDesktop(chooseMode);
-                Log.v("test", "initDesktop加载");
+                costTime = System.nanoTime() - startTime;
+                Log.v("timeTest", "initDesktop加载耗时: "+ costTime/1000000 + "毫秒");
             }
         });
         builder.show();
@@ -209,10 +212,8 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
         });
-        //List<AppItem> list = new ArrayList<AppItem>();
-        // AppItem jcxx = null;
+        List<AppItem> list = new ArrayList<>();
 
-        //manager = new dbManager(mContext);
         for (int i = 0; i < activities.size(); i++) {
             int pageNum = i / 12;
             int index = i % 12;
@@ -233,9 +234,13 @@ public class MainActivity extends AppCompatActivity {
                 pageNum = -1;
                 index = 3;
             }
-            manager.addItem(INDIVIDUALITY_MODE, i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
+            AppItem item = new AppItem(i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
                     appInfo.activityInfo.name, pageNum, index);
+            //manager.addItem(INDIVIDUALITY_MODE, i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
+                    //appInfo.activityInfo.name, pageNum, index);
+            list.add(item);
         }
+        manager.addItems(list, INDIVIDUALITY_MODE);
         mode2Info = getSharedPreferences("mode2Info",MODE_PRIVATE);
         mode2Editor= mode2Info.edit();
         mode2Editor.putInt("page_num", activities.size()/15 + 1);
