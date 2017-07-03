@@ -1,0 +1,11 @@
+<!--
+android:minWidth:App Widget的最小宽度
+android:minHeight:App Widget的最小高度
+android:updatePeriodMillis:App Widget的更新频率
+android:initialLayout:App Widget的初始化界面
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:minWidth="294dp"
+                    android:minHeight="72dp"
+                    android:updatePeriodMillis="1000"
+                    android:initialLayout="@layout/widget" />

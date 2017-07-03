@@ -42,6 +42,28 @@
         <activity android:name=".apps.WeatherActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/weather_name"/>
+
+        <service
+            android:name=".widget.TimeService"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.example.idoit.test.TimeService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".widget.ClockAppWidgetProvider">
+            <!-- 广播接收的action：当appwidget改变时 -->
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.wd.appWidgetUpdate"></action>
+                <action android:name="android.intent.action.TIME_CHANGED"></action>
+                <action android:name="android.intent.action.TIME_TICK"></action>
+                <action android:name="android.intent.action.TIME_SET"></action>
+            </intent-filter>
+            <!-- 设置元数据：将ClockAppWidgetProvider类和AppWidgetProviderInfo对象appwidget_provider_time关联起来 -->
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/provider_info"/>
+        </receiver>
     </application>
 
 </manifest>

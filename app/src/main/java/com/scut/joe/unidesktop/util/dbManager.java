@@ -190,8 +190,10 @@ public class dbManager {
             app.setClassName(cursor.getString(cursor.getColumnIndex("class_name")));
             app.setIndex(cursor.getInt(cursor.getColumnIndex("page_index")));
             app.setPageNum(cursor.getInt(cursor.getColumnIndex("page_num")));
-            app.setIsEmpty(cursor.getInt(cursor.getColumnIndex("is_empty")));
-            app.setPageRow(cursor.getInt(cursor.getColumnIndex("page_row")));
+            if(mode2tableName(mode) == "individuality_tb") {
+                app.setIsEmpty(cursor.getInt(cursor.getColumnIndex("is_empty")));
+                app.setPageRow(cursor.getInt(cursor.getColumnIndex("page_row")));
+            }
             apps.add(app);
         }
         cursor.close();
