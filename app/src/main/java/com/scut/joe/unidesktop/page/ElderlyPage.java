@@ -18,9 +18,8 @@ import android.widget.RelativeLayout;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.model.AppItem;
-import com.scut.joe.unidesktop.model.DragAdapter;
 import com.scut.joe.unidesktop.container.DragGrid;
-import com.scut.joe.unidesktop.model.IconAdapter;
+import com.scut.joe.unidesktop.adapter.IconAdapter;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.FragmentBackHandler;
 import com.scut.joe.unidesktop.util.dbManager;

@@ -1,4 +1,4 @@
-package com.scut.joe.unidesktop.model;
+package com.scut.joe.unidesktop.adapter;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class DragAdapter extends BaseAdapter {
 	/** 是否显示底部的ITEM */
 	private boolean isItemShow = false;
 	private Context context;
-	/** 控制的postion */
+	/** 控制的position */
 	private int holdPosition;
 	/** 是否改变 */
 	private boolean isChanged = false;

@@ -1,9 +1,11 @@
-package com.scut.joe.unidesktop.model;
+package com.scut.joe.unidesktop.adapter;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import com.scut.joe.unidesktop.model.CommonViewHolder;
 
 import java.util.List;
 

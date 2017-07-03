@@ -1,4 +1,4 @@
-package com.scut.joe.unidesktop.model;
+package com.scut.joe.unidesktop.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.container.DragGrid;
+import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.dbManager;
 
@@ -29,7 +30,7 @@ public class IconAdapter extends BaseAdapter {
     /** 是否显示底部的ITEM */
     private boolean isItemShow = false;
     private Context context;
-    /** 控制的postion */
+    /** 控制的position */
     private int holdPosition;
     /** 是否改变 */
     private boolean isChanged = false;
@@ -148,7 +149,7 @@ public class IconAdapter extends BaseAdapter {
             //holderView.item_text.setEnabled(true);
         }
         if(remove_position == position){
-            deletInfo(position);
+            deleteInfo(position);
         }
         if (!isDelete) {
             holderView.iv_delete.setVisibility(View.GONE);
@@ -176,7 +177,7 @@ public class IconAdapter extends BaseAdapter {
      * 删除某个position
      * @param position
      */
-    public void deletInfo(int position)
+    public void deleteInfo(int position)
     {
         int id = getItem(position).getId();
         iconList.remove(position);

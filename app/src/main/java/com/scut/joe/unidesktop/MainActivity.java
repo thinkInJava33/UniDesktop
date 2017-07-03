@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             int pageNum = i / 12;
             int index = i % 12;
             int row = -1;
-            int isEmety = 0;
+            int isEmpty = 0;
             ResolveInfo appInfo = activities.get(i);
             if(appInfo.activityInfo.packageName.equals("com.android.dialer")) {
                 manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
@@ -235,21 +235,17 @@ public class MainActivity extends AppCompatActivity {
                 index = 1;
             }
             if(appInfo.activityInfo.packageName.equals("com.android.mms")){
-                manager.addItem(INDIVIDUALITY_MODE, i + activities.size(), appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
-                        appInfo.activityInfo.name, pageNum, index,row,1);
+                manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
                 pageNum = -1;
                 index = 2;
             }
             if(appInfo.activityInfo.packageName.equals("com.android.browser")){
-                manager.addItem(INDIVIDUALITY_MODE, i + activities.size(), appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
-                        appInfo.activityInfo.name, pageNum, index,row,1);
+                manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
                 pageNum = -1;
                 index = 3;
             }
             AppItem item = new AppItem(i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
-                    appInfo.activityInfo.name, pageNum, index);
-            //manager.addItem(INDIVIDUALITY_MODE, i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
-                    //appInfo.activityInfo.name, pageNum, index);
+                    appInfo.activityInfo.name, pageNum, index, row, isEmpty);
             list.add(item);
         }
         manager.addItems(list, INDIVIDUALITY_MODE);

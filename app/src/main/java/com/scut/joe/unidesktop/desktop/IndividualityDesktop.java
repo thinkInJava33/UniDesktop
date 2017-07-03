@@ -19,15 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.scut.joe.unidesktop.R;
-import com.scut.joe.unidesktop.model.DragAdapter;
+import com.scut.joe.unidesktop.adapter.DragAdapter;
 import com.scut.joe.unidesktop.container.DragGrid;
 import com.scut.joe.unidesktop.model.AppItem;
-import com.scut.joe.unidesktop.page.ElderlyPage;
 import com.scut.joe.unidesktop.page.IndividualityPage;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.FragmentBackHandler;

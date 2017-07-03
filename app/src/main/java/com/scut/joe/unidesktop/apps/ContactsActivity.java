@@ -8,13 +8,12 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.model.ContactBean;
-import com.scut.joe.unidesktop.model.ContactListAdapter;
+import com.scut.joe.unidesktop.adapter.ContactListAdapter;
 import com.scut.joe.unidesktop.widget.QuickAlphabeticBar;
 
 import java.util.ArrayList;
@@ -80,8 +79,8 @@ public class ContactsActivity extends AppCompatActivity{
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
             if (cursor != null && cursor.getCount() > 0) {
-                contactIdMap = new HashMap<Integer, ContactBean>();
-                list = new ArrayList<ContactBean>();
+                contactIdMap = new HashMap<>();
+                list = new ArrayList<>();
                 cursor.moveToFirst(); // 游标移动到第一项
                 for (int i = 0; i < cursor.getCount(); i++) {
                     cursor.moveToPosition(i);

@@ -1,4 +1,4 @@
-package com.scut.joe.unidesktop.model;
+package com.scut.joe.unidesktop.adapter;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.scut.joe.unidesktop.R;
+import com.scut.joe.unidesktop.model.ContactBean;
 import com.scut.joe.unidesktop.widget.QuickAlphabeticBar;
 
 import java.io.InputStream;
@@ -52,7 +53,7 @@ public class ContactListAdapter extends BaseAdapter {
         }
 
         Set<String> sectionLetters = alphaIndexer.keySet();
-        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+        ArrayList<String> sectionList = new ArrayList<>(sectionLetters);
         Collections.sort(sectionList); // 根据首字母进行排序
         sections = new String[sectionList.size()];
         sectionList.toArray(sections);

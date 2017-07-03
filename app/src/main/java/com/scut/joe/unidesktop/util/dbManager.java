@@ -33,7 +33,6 @@ public class dbManager {
     public void addItem(int mode,int id, String name,Drawable icon,String packageName,
             String className,int pageNum, int index,int row, int isEmpty) {
         //第一步，将Drawable对象转化为Bitmap对象
-        Bitmap bmp = (((BitmapDrawable)icon).getBitmap());
         //第二步，声明并创建一个输出字节流对象
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         if(icon != null) {
@@ -98,6 +97,8 @@ public class dbManager {
                 cv.put("class_name", item.getClassName());
                 cv.put("page_num", item.getPageNum());
                 cv.put("page_index", item.getIndex());
+                cv.put("page_row", item.getPageRow());
+                cv.put("is_empty", item.getIsEmpty());
                 db.insert(mode2tableName(mode),null,cv);
             }
             db.setTransactionSuccessful();

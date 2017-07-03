@@ -21,7 +21,7 @@ public class AppItem {
     public AppItem(){}
 
     public AppItem(int id, String appName, Drawable appIcon, String packageName, String className, int pageNum, int index,
-                   int isEmepty, int pageRow) {
+                   int pageRow, int isEmpty) {
         this.id = id;
         this.appName = appName;
         this.appIcon = appIcon;
@@ -30,7 +30,7 @@ public class AppItem {
         this.pageNum = pageNum;
         this.index = index;
         this.pageRow = pageRow;
-        this.isEmpty = isEmepty;
+        this.isEmpty = isEmpty;
     }
 
     public int getId() {
