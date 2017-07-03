@@ -111,19 +111,23 @@ public class DragAdapter extends BaseAdapter {
 		}
 		holderView = (HolderView)view.getTag();
 		AppItem iconInfo = getItem(position);
-		Drawable drawable = iconInfo.getAppIcon();
-		Bitmap srcBmp = ((BitmapDrawable) drawable).getBitmap();
-		Bitmap destBmp = srcBmp.copy(srcBmp.getConfig(), true);
-		Drawable darkDrawable = new BitmapDrawable(destBmp);
-		darkDrawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-		StateListDrawable stateListDrawable = new StateListDrawable();
-		stateListDrawable.addState(new int[] {android.R.attr.state_pressed}, darkDrawable);
-		stateListDrawable.addState(new int[]{},drawable);
-		holderView.iv_icon.setImageDrawable(stateListDrawable);
-		notifyDataSetChanged();
-
-
-		holderView.item_text.setText(iconInfo.getAppName());
+		if(iconInfo.getIsEmpty() == 0) {
+			Drawable drawable = iconInfo.getAppIcon();
+			Bitmap srcBmp = ((BitmapDrawable) drawable).getBitmap();
+			Bitmap destBmp = srcBmp.copy(srcBmp.getConfig(), true);
+			Drawable darkDrawable = new BitmapDrawable(destBmp);
+			darkDrawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+			StateListDrawable stateListDrawable = new StateListDrawable();
+			stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, darkDrawable);
+			stateListDrawable.addState(new int[]{}, drawable);
+			holderView.iv_icon.setImageDrawable(stateListDrawable);
+			notifyDataSetChanged();
+			holderView.item_text.setText(iconInfo.getAppName());
+		}else{
+			holderView.item_text.setText("");
+			holderView.iv_icon.setImageAlpha(0);
+			notifyDataSetChanged();
+		}
 		holderView.iv_delete.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -169,7 +173,7 @@ public class DragAdapter extends BaseAdapter {
 		if(remove_position == position){
 			deletInfo(position);
 		}
-		if (!isDelete) {
+		if (!isDelete || iconInfo.getIsEmpty() == 1) {
 			holderView.iv_delete.setVisibility(View.GONE);
 		}
 		else
@@ -219,6 +223,7 @@ public class DragAdapter extends BaseAdapter {
 		holdPosition = dropPostion;
 		AppItem dragItem = getItem(dragPostion);
 		AppItem dropItem = getItem(dropPostion);
+
 		Log.i("test","dragPosiotion"+dragPostion);
 		Log.i("test","dropPosiotion"+dropPostion);
 		dbManager db = new dbManager(context);
@@ -229,30 +234,40 @@ public class DragAdapter extends BaseAdapter {
 		if(dragItem.getIndex()> dropItem.getIndex()){
 			moveForward = true;
 		}
-
-		int dropIndex = getItem(dropPostion).getIndex();
-		dragItem.setIndex(dropIndex);
-
-		Log.d(TAG, "startPostion=" + dragPostion + ";endPosition=" + dropPostion);
-		if (dragPostion < dropPostion) {
-			channelList.add(dropPostion + 1, dragItem);
+		if(dropItem.getIsEmpty() == 1){
+			int tempIndex = dropItem.getIndex();
+			dropItem.setIndex(dragItem.getIndex());
+			dragItem.setIndex(tempIndex);
+			channelList.remove(dropPostion);
+			channelList.add(dropPostion,dragItem);
 			channelList.remove(dragPostion);
-		} else {
-			channelList.add(dropPostion, dragItem);
-			channelList.remove(dragPostion + 1);
-		}
-		if(moveForward) {
-			for (int i = dropPostion + 1; i <= dragPostion; i++) {
-				AppItem tempItem = getItem(i);
-				tempItem.setIndex(tempItem.getIndex() + 1);
+			channelList.add(dragPostion,dropItem);
+			db.updateApp(currentMode,dragItem);
+			db.updateApp(currentMode, dropItem);
+		}else {
+			int dropIndex = getItem(dropPostion).getIndex();
+			dragItem.setIndex(dropIndex);
+			Log.d(TAG, "startPostion=" + dragPostion + ";endPosition=" + dropPostion);
+			if (dragPostion < dropPostion) {
+				channelList.add(dropPostion + 1, dragItem);
+				channelList.remove(dragPostion);
+			} else {
+				channelList.add(dropPostion, dragItem);
+				channelList.remove(dragPostion + 1);
 			}
-			db.exchange(currentMode, dropPostion, dragPostion,channelList);
-		}else{
-			for (int i = dragPostion ; i < dropPostion; i++) {
-				AppItem tempItem = getItem(i);
-				tempItem.setIndex(tempItem.getIndex() - 1);
+			if (moveForward) {
+				for (int i = dropPostion + 1; i <= dragPostion; i++) {
+					AppItem tempItem = getItem(i);
+					tempItem.setIndex(tempItem.getIndex() + 1);
+				}
+				db.exchange(currentMode, dropPostion, dragPostion, channelList);
+			} else {
+				for (int i = dragPostion; i < dropPostion; i++) {
+					AppItem tempItem = getItem(i);
+					tempItem.setIndex(tempItem.getIndex() - 1);
+				}
+				db.exchange(currentMode, dragPostion, dropPostion, channelList);
 			}
-			db.exchange(currentMode, dragPostion, dropPostion,channelList);
 		}
 		isChanged = true;
 		notifyDataSetChanged();

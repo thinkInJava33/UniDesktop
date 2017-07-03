@@ -84,7 +84,6 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
         ll = (RelativeLayout)view.findViewById(R.id.ll);
         gridview = (DragGrid)ll.findViewById(R.id.gradview);
         //rl_strues = (RelativeLayout)findViewById(R.id.rl_strues);
-
         return view;
     }
 
@@ -133,6 +132,9 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
                     return;
                 }
                 AppItem dragView = (AppItem)parent.getItemAtPosition(position);
+                if(dragView.getIsEmpty() == 1){
+                    return;
+                }
                 ComponentName componentName = new ComponentName(dragView.getPackageName(),dragView.getClassName());
                 Intent i = new Intent(Intent.ACTION_MAIN)
                         .setComponent(componentName)

@@ -31,7 +31,7 @@ public class dbManager {
     }
 
     public void addItem(int mode,int id, String name,Drawable icon,String packageName,
-            String className,int pageNum, int index) {
+            String className,int pageNum, int index,int row, int isEmpty) {
         //第一步，将Drawable对象转化为Bitmap对象
         Bitmap bmp = (((BitmapDrawable)icon).getBitmap());
         //第二步，声明并创建一个输出字节流对象
@@ -39,6 +39,29 @@ public class dbManager {
         //第三步，调用compress将Bitmap对象压缩为PNG格式，第二个参数为PNG图片质量，第三个参数为接收容器，即输出字节流os
         bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
        //第四步，将输出字节流转换为字节数组，并直接进行存储数据库操作，注意，所对应的列的数据类型应该是BLOB类型
+        ContentValues cv=new ContentValues();
+        cv.put("_id",id);
+        cv.put("name", name);
+        cv.put("icon", os.toByteArray());
+        cv.put("package_name", packageName);
+        cv.put("class_name", className);
+        cv.put("page_num", pageNum);
+        cv.put("page_index", index);
+        cv.put("page_row", row);
+        cv.put("is_empty", isEmpty);
+
+        db.insert(mode2tableName(mode),null,cv);
+    }
+
+    public void addItem(int mode,int id, String name,Drawable icon,String packageName,
+                        String className,int pageNum, int index) {
+        //第一步，将Drawable对象转化为Bitmap对象
+        Bitmap bmp = (((BitmapDrawable)icon).getBitmap());
+        //第二步，声明并创建一个输出字节流对象
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        //第三步，调用compress将Bitmap对象压缩为PNG格式，第二个参数为PNG图片质量，第三个参数为接收容器，即输出字节流os
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+        //第四步，将输出字节流转换为字节数组，并直接进行存储数据库操作，注意，所对应的列的数据类型应该是BLOB类型
         ContentValues values = new ContentValues();
         ContentValues cv=new ContentValues();
 
@@ -100,11 +123,14 @@ public class dbManager {
 
     public void exchange(int mode,int start,int end,List<AppItem> apps){
         for(int i = start; i <= end; i++){
-            AppItem tempApp = apps.get(i);
-            ContentValues cv = new ContentValues();
-            cv.put("page_index",tempApp.getIndex());
-            db.update(mode2tableName(mode),cv,"_id = ?",new String[]{String.valueOf(tempApp.getId())});
+            updateApp(mode,apps.get(i));
         }
+    }
+
+    public void updateApp(int mode,AppItem app){
+        ContentValues cv = new ContentValues();
+        cv.put("page_index",app.getIndex());
+        db.update(mode2tableName(mode),cv,"_id = ?",new String[]{String.valueOf(app.getId())});
     }
 
 
@@ -130,6 +156,8 @@ public class dbManager {
             app.setClassName(cursor.getString(cursor.getColumnIndex("class_name")));
             app.setIndex(cursor.getInt(cursor.getColumnIndex("page_index")));
             app.setPageNum(cursor.getInt(cursor.getColumnIndex("page_num")));
+            app.setIsEmpty(cursor.getInt(cursor.getColumnIndex("is_empty")));
+            app.setPageRow(cursor.getInt(cursor.getColumnIndex("page_row")));
             apps.add(app);
         }
         cursor.close();
