@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.scut.joe.unidesktop.model.AppItem;
 
@@ -35,9 +36,12 @@ public class dbManager {
         Bitmap bmp = (((BitmapDrawable)icon).getBitmap());
         //第二步，声明并创建一个输出字节流对象
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        //第三步，调用compress将Bitmap对象压缩为PNG格式，第二个参数为PNG图片质量，第三个参数为接收容器，即输出字节流os
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
-       //第四步，将输出字节流转换为字节数组，并直接进行存储数据库操作，注意，所对应的列的数据类型应该是BLOB类型
+        if(icon != null) {
+            Bitmap bmp = (((BitmapDrawable) icon).getBitmap());
+            //第三步，调用compress将Bitmap对象压缩为PNG格式，第二个参数为PNG图片质量，第三个参数为接收容器，即输出字节流os
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+            //第四步，将输出字节流转换为字节数组，并直接进行存储数据库操作，注意，所对应的列的数据类型应该是BLOB类型
+        }
         ContentValues cv=new ContentValues();
         cv.put("_id",id);
         cv.put("name", name);
@@ -72,6 +76,10 @@ public class dbManager {
         cv.put("page_num", pageNum);
         cv.put("page_index", index);
         db.insert(mode2tableName(mode),null,cv);
+    }
+
+    public void addEmptyItem(int mode,int id,int pageNum,int index){
+        addItem(mode,id,"",null,"","",pageNum,index,-1,1);
     }
 
     public void addItems(List<AppItem> items, int mode){

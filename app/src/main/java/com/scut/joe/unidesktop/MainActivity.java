@@ -225,22 +225,24 @@ public class MainActivity extends AppCompatActivity {
             int isEmety = 0;
             ResolveInfo appInfo = activities.get(i);
             if(appInfo.activityInfo.packageName.equals("com.android.dialer")) {
-                manager.addItem(INDIVIDUALITY_MODE, i + activities.size(), appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
-                        appInfo.activityInfo.name, pageNum, index,row,1);
+                manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
                 pageNum = -1;
                 index = 0;
             }
             if(appInfo.activityInfo.packageName.equals("com.android.contacts")){
-                manager.addItem(INDIVIDUALITY_MODE, i + activities.size(), appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
-                        appInfo.activityInfo.name, pageNum, index,row,1);
+                manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
                 pageNum = -1;
                 index = 1;
             }
             if(appInfo.activityInfo.packageName.equals("com.android.mms")){
+                manager.addItem(INDIVIDUALITY_MODE, i + activities.size(), appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
+                        appInfo.activityInfo.name, pageNum, index,row,1);
                 pageNum = -1;
                 index = 2;
             }
-            if(Check.isBrowser(appInfo, mContext)){
+            if(appInfo.activityInfo.packageName.equals("com.android.browser")){
+                manager.addItem(INDIVIDUALITY_MODE, i + activities.size(), appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
+                        appInfo.activityInfo.name, pageNum, index,row,1);
                 pageNum = -1;
                 index = 3;
             }
