@@ -14,11 +14,14 @@ public class AppItem {
     private String className;
     private int pageNum;
     private int index;
+    private int isEmpty;
+    private int pageRow;
 
 
     public AppItem(){}
 
-    public AppItem(int id, String appName, Drawable appIcon, String packageName, String className, int pageNum, int index) {
+    public AppItem(int id, String appName, Drawable appIcon, String packageName, String className, int pageNum, int index,
+                   int isEmepty, int pageRow) {
         this.id = id;
         this.appName = appName;
         this.appIcon = appIcon;
@@ -26,6 +29,8 @@ public class AppItem {
         this.className = className;
         this.pageNum = pageNum;
         this.index = index;
+        this.pageRow = pageRow;
+        this.isEmpty = isEmepty;
     }
 
     public int getId() {
@@ -82,5 +87,21 @@ public class AppItem {
 
     public void setPageNum(int pageNum) {
         this.pageNum = pageNum;
+    }
+
+    public int getPageRow() {
+        return pageRow;
+    }
+
+    public void setPageRow(int pageRow) {
+        this.pageRow = pageRow;
+    }
+
+    public int getIsEmpty() {
+        return isEmpty;
+    }
+
+    public void setIsEmpty(int isEmpty) {
+        this.isEmpty = isEmpty;
     }
 }

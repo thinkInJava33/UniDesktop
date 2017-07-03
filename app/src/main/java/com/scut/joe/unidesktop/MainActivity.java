@@ -2,8 +2,11 @@ package com.scut.joe.unidesktop;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.provider.Contacts;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -214,15 +217,22 @@ public class MainActivity extends AppCompatActivity {
         });
         List<AppItem> list = new ArrayList<>();
 
+        //manager = new dbManager(mContext);
         for (int i = 0; i < activities.size(); i++) {
             int pageNum = i / 12;
             int index = i % 12;
+            int row = -1;
+            int isEmety = 0;
             ResolveInfo appInfo = activities.get(i);
             if(appInfo.activityInfo.packageName.equals("com.android.dialer")) {
+                manager.addItem(INDIVIDUALITY_MODE, i + activities.size(), appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
+                        appInfo.activityInfo.name, pageNum, index,row,1);
                 pageNum = -1;
                 index = 0;
             }
             if(appInfo.activityInfo.packageName.equals("com.android.contacts")){
+                manager.addItem(INDIVIDUALITY_MODE, i + activities.size(), appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
+                        appInfo.activityInfo.name, pageNum, index,row,1);
                 pageNum = -1;
                 index = 1;
             }

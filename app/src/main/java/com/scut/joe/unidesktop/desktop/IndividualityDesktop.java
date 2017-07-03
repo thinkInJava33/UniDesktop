@@ -102,12 +102,12 @@ public class IndividualityDesktop extends Desktop implements FragmentBackHandler
 
     @Override
     public void startApp() {
-
+        //complete
     }
 
     @Override
     public void arrangeApp() {
-
+        //complete
     }
 
     @Override
