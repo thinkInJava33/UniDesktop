@@ -185,9 +185,9 @@ public class MainActivity extends AppCompatActivity {
         manager.addItem(ELDERLY_MODE, id++, "message", this.getResources().getDrawable(R.drawable.weather_icon),
                 "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.MessageActivity", 0, 6);
         manager.addItem(ELDERLY_MODE, id++, "phone", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.PhoneActivity", 0, 7);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.PhoneActivity", 1, 7);
         manager.addItem(ELDERLY_MODE, id++, "contacts", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", 0, 8);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", 1, 8);
         mode0Info = getSharedPreferences("mode0Info",MODE_PRIVATE);
         mode0Editor= mode0Info.edit();
         mode0Editor.putInt("page_num", 1);

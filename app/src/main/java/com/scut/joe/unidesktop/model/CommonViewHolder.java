@@ -89,4 +89,22 @@ public class CommonViewHolder {
         iv.setImageDrawable(image);
         return this;
     }
+
+    /**
+     * 为ImageView设置背景图片
+     * @param viewId
+     * @param drawableId
+     * @return
+     */
+    public CommonViewHolder setBackground(int viewId, int drawableId){
+        ImageView iv = getView(viewId);
+        iv.setBackgroundResource(drawableId);
+        return this;
+    }
+
+    public CommonViewHolder addViewListener(int viewId, View.OnClickListener listener){
+        View v = getView(viewId);
+        v.setOnClickListener(listener);
+        return this;
+    }
 }
