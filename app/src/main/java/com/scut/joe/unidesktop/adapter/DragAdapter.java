@@ -147,14 +147,15 @@ public class DragAdapter extends BaseAdapter {
 			}
 		});
 
-		if (position == getCount()-1){
-			if (convertView == null) {
-				convertView = view;
-			}
-			convertView.setEnabled(false);
-			convertView.setFocusable(false);
-			convertView.setClickable(false);
-		}
+//		if (position == getCount()-1){
+//			if (convertView == null) {
+//				convertView = view;
+//			}
+//			convertView.setEnabled(false);
+//			convertView.setFocusable(false);
+//			convertView.setClickable(false);
+//			Log.i("test","htere");
+//		}
 		//		DragView channel = getItem(position);
 		//		
 		//		item_text.setText(channel.getName());

@@ -8,14 +8,19 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +35,13 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.apps.SearchActivity;
 import com.scut.joe.unidesktop.adapter.DragAdapter;
+import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.DataTools;
 
@@ -110,6 +117,11 @@ public class DragGrid extends GridView {
 	 * 执行动画的布局
 	 */
 	private RelativeLayout rootLayout;
+
+	final String settings[] = {"更换壁纸", "更改模式", "系统设置","桌面排列"};
+
+	int currentRow;
+	int currentCol;
 
 	private Context mContext;
 	public DragGrid(Context context) {
@@ -538,10 +550,109 @@ public class DragGrid extends GridView {
 	 */
 	public void setOnClickListener(final MotionEvent ev) {
 		setOnItemLongClickListener(new OnItemLongClickListener() {
-
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public boolean onItemLongClick(AdapterView<?> parent, final View view,
+										   int position, long id) {
+				AppItem dragView = (AppItem)parent.getItemAtPosition(position);
+				if(dragView.getIsEmpty() == 1){
+					int currentMode = mContext.getSharedPreferences("mode",Context.MODE_PRIVATE).getInt("choose",0);
+					if(currentMode == 2){
+						AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+						builder.setTitle("Setting Dialog");
+						builder.setItems(settings, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								switch (which){
+									case 0:
+										Log.i("test","壁纸");
+										break;
+									case 1:
+										Log.i("test","模式");
+										break;
+									case 2:
+										Log.i("test","系统设置");
+										Intent intent =  new Intent(Settings.ACTION_SETTINGS);
+										mContext.startActivity(intent);
+										break;
+									case 3:
+										Log.i("test","排列");
+										AlertDialog.Builder arrangeBuilder = new AlertDialog.Builder(mContext);
+										arrangeBuilder.setTitle("桌面排列");
+										View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_arrange,null);
+										final TextView tv1 = (TextView) v.findViewById(R.id.id_tv1);
+										final TextView tv2 = (TextView) v.findViewById(R.id.id_tv2);
+										final SharedPreferences mode2Info = mContext.getSharedPreferences("mode2Info",Context.MODE_PRIVATE);
+										currentCol = mode2Info.getInt("page_col",4);
+										currentRow = mode2Info.getInt("page_row",4);
+										String arrange = currentRow + " X " + currentCol;
+										tv2.setText("当前布局:" + arrange);
+										SeekBar rowBar =(SeekBar) v.findViewById(R.id.id_rowBar);
+										rowBar.setProgress(currentRow - 3);
+										rowBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+											@Override
+											public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+												progress += 3;
+												currentRow = progress;
+												String arrange = currentRow + " X " + currentCol;
+												tv1.setText("正在拖动");
+												tv2.setText("当前布局:" + arrange);
+											}
+
+											@Override
+											public void onStartTrackingTouch(SeekBar seekBar) {
+												tv1.setText("开始拖动");
+											}
+
+											@Override
+											public void onStopTrackingTouch(SeekBar seekBar) {
+												tv1.setText("停止拖动");
+											}
+										});
+										SeekBar colBar =(SeekBar) v.findViewById(R.id.id_colBar);
+										colBar.setProgress(currentCol - 3);
+										colBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+											@Override
+											public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+												progress += 3;
+												currentCol = progress;
+												String arrange = currentRow + " X " + currentCol;
+												tv1.setText("正在拖动");
+												tv2.setText("当前布局:" + arrange);
+											}
+
+											@Override
+											public void onStartTrackingTouch(SeekBar seekBar) {
+												tv1.setText("开始拖动");
+											}
+
+											@Override
+											public void onStopTrackingTouch(SeekBar seekBar) {
+												tv1.setText("停止拖动");
+											}
+										});
+
+										arrangeBuilder.setView(v);
+										arrangeBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												SharedPreferences.Editor confirm = mode2Info.edit();
+												confirm.putInt("page_row",currentRow);
+												confirm.putInt("page_col",currentCol);
+												confirm.commit();
+												setNumColumns(currentCol);
+											}
+										});
+										arrangeBuilder.show();
+
+										break;
+								}
+							}
+						});
+						builder.show();
+					}
+
+					return true;
+				}
 				int x = (int) ev.getX();// 长安事件的X位置
 				int y = (int) ev.getY();// 长安事件的y位置
 				isDrag = true;

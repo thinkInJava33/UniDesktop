@@ -2,7 +2,7 @@
 <com.scut.joe.unidesktop.container.SquareLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/transparent" >
 
     <LinearLayout
@@ -18,20 +18,16 @@
             android:layout_width="@dimen/layout_50"
             android:layout_height="@dimen/layout_50"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/hello_world"
+            android:layout_marginTop="8dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/setting_icon" />
+             />
 
         <TextView
             android:id="@+id/app_name"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
             android:gravity="center"
-            android:paddingBottom="10dp"
-            android:text="@string/hello_world"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:maxLines="1"
@@ -44,7 +40,6 @@
         android:layout_height="@dimen/layout_30"
         android:layout_alignRight="@id/edit_ll"
         android:layout_alignTop="@id/edit_ll"
-        android:contentDescription="@string/hello_world"
         android:padding="8dp"
         android:clickable="true"
         android:scaleType="fitCenter"

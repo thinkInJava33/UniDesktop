@@ -13,7 +13,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "create table individuality_tb(_id integer primary " +
                     "key ,name text,icon ,package_name text," +
                     "class_name text,page_num integer,page_index integer," +
-                    "is_empty integer,page_row integer)";
+                    "is_empty integer,length integer)";
     final String CREATE_TABLE_GP_SQL=
             "create table guardianship_tb(_id integer primary " +
                     "key ,name text,icon ,package_name text," +

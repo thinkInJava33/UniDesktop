@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="120dp"
+              android:orientation="vertical"
+              tools:context=".MainActivity"
+    >
+
+    <SeekBar
+        android:id="@+id/id_rowBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:max="2"
+        android:progress="4"
+        />
+    <SeekBar
+        android:id="@+id/id_colBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:max="1"
+        android:progress="4"
+        />
+
+    <TextView
+        android:id="@+id/id_tv1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:id="@+id/id_tv2"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_height="40dp"
+        />
+
+</LinearLayout>

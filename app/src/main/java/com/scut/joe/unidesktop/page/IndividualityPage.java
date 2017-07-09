@@ -1,8 +1,10 @@
 package com.scut.joe.unidesktop.page;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,6 +52,8 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
      */
     private boolean isMove = false;
 
+
+
     public static IndividualityPage newInstance(int pageIndex){
         Bundle args = new Bundle();
         args.putSerializable("page_num",pageIndex);
@@ -79,6 +83,8 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
         mContext = getActivity();
         ll = (RelativeLayout)view.findViewById(R.id.ll);
         gridview = (DragGrid)ll.findViewById(R.id.gradview);
+        int currentCol = mContext.getSharedPreferences("mode2Info",Context.MODE_PRIVATE).getInt("page_col",3);
+        gridview.setNumColumns(currentCol);
         //rl_strues = (RelativeLayout)findViewById(R.id.rl_strues);
         return view;
     }
@@ -128,6 +134,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
                     return;
                 }
                 AppItem dragView = (AppItem)parent.getItemAtPosition(position);
+                //如果是空,不响应点击
                 if(dragView.getIsEmpty() == 1){
                     return;
                 }
@@ -138,7 +145,7 @@ public class IndividualityPage extends Fragment implements FragmentBackHandler{
                 Log.i("test","click");
                 startActivity(i);
 
-                if (!dragView.getAppName().equals("更多")) {
+                if (!dragView.getAppName()  .equals("更多")) {
                     Toast.makeText(mContext, dragView.getAppName(), Toast.LENGTH_SHORT).show();
                 }
             }

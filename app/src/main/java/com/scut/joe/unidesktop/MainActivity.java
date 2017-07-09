@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 
 import com.scut.joe.unidesktop.controll.Check;
@@ -218,7 +219,10 @@ public class MainActivity extends AppCompatActivity {
         List<AppItem> list = new ArrayList<>();
 
         //manager = new dbManager(mContext);
-        for (int i = 0; i < activities.size(); i++) {
+        TextView time = new TextView(this);
+
+
+        for (int i = 3; i < activities.size(); i++) {
             int pageNum = i / 12;
             int index = i % 12;
             int row = -1;

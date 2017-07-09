@@ -205,6 +205,9 @@ public class IndividualityDesktop extends Desktop implements FragmentBackHandler
         dbManager manager = new dbManager(getActivity());
         //Log.i("test","pageNum : "+pageIndex);
         List<AppItem> list = manager.getApps(2,-1);
+        for(AppItem app:list){
+            app.setAppName("");
+        }
         return list;
     }
 }
