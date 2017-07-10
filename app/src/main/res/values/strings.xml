@@ -8,6 +8,7 @@
     <string name="message_name">短信</string>
     <string name="contacts_name">联系人</string>
     <string name="phone_name">电话</string>
+    <string name="message_detail">短信细节</string>
     <string name="home">快捷菜单</string>
     <string name="search_hint">请输入想要查询的内容</string>
 </resources>

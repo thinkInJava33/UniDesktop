@@ -157,38 +157,43 @@ public class MainActivity extends AppCompatActivity {
             tempClassName = resolveInfo.activityInfo.name;
             if(Check.isSystemClock(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
-                        this.getResources().getDrawable(R.drawable.clock_icon),
+                        resolveInfo.loadIcon(pm),
                         tempPackageName, tempClassName, 0, 0);
             }
             else if(Check.isSystemCalendar(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
-                        this.getResources().getDrawable(R.drawable.calendar_icon),
+                        resolveInfo.loadIcon(pm),
                         tempPackageName, tempClassName, 0, 1);
             }
             else if(Check.isSystemGallery(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
-                        this.getResources().getDrawable(R.drawable.photo_icon),
+                        resolveInfo.loadIcon(pm),
                         tempPackageName, tempClassName, 0, 2);
             }
             else if(Check.isSystemCamera(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
-                        this.getResources().getDrawable(R.drawable.camera_icon),
+                        resolveInfo.loadIcon(pm),
                         tempPackageName, tempClassName, 0, 3);
             }
             else if(Check.isBrowser(resolveInfo, mContext)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
-                        this.getResources().getDrawable(R.drawable.web_icon),
+                        resolveInfo.loadIcon(pm),
                         tempPackageName, tempClassName, 0, 4);
             }
+            else if(Check.isWechat(resolveInfo)){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        resolveInfo.loadIcon(pm),
+                        tempPackageName, tempClassName, 0, 5);
+            }
         }
-        manager.addItem(ELDERLY_MODE, id++, "weather", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.WeatherActivity", 0, 5);
-        manager.addItem(ELDERLY_MODE, id++, "message", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.MessageActivity", 0, 6);
-        manager.addItem(ELDERLY_MODE, id++, "phone", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.PhoneActivity", 1, 7);
-        manager.addItem(ELDERLY_MODE, id++, "contacts", this.getResources().getDrawable(R.drawable.weather_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", 1, 8);
+        manager.addItem(ELDERLY_MODE, id++, "天气", this.getResources().getDrawable(R.drawable.default_icon),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.WeatherActivity", 0, 6);
+        manager.addItem(ELDERLY_MODE, id++, "短信", this.getResources().getDrawable(R.drawable.message),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.MessageActivity", 0, 7);
+        manager.addItem(ELDERLY_MODE, id++, "通话记录", this.getResources().getDrawable(R.drawable.phone_icon),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.PhoneActivity", 1, 0);
+        manager.addItem(ELDERLY_MODE, id++, "联系人", this.getResources().getDrawable(R.drawable.contacts),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", 1, 1);
         mode0Info = getSharedPreferences("mode0Info",MODE_PRIVATE);
         mode0Editor= mode0Info.edit();
         mode0Editor.putInt("page_num", 1);

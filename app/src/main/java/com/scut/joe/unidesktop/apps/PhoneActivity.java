@@ -33,8 +33,8 @@ import java.util.List;
 
 public class PhoneActivity extends AppCompatActivity {
     private ListView callLogList;
-    private ImageButton contactsButton;
-    private ImageButton phoneButton;
+    private Button contactsButton;
+    private Button phoneButton;
     private AsyncQueryHandler asyncQuery;
     private DialogAdapter adapter;
     private List<CallLogBean> callLogs;
@@ -45,8 +45,8 @@ public class PhoneActivity extends AppCompatActivity {
         setContentView(R.layout.contact_record_list_view);
 
         callLogList = (ListView)findViewById(R.id.call_log_list);
-        contactsButton = (ImageButton)findViewById(R.id.contacts_button);
-        phoneButton = (ImageButton)findViewById(R.id.phone_button);
+        contactsButton = (Button)findViewById(R.id.contacts_button);
+        phoneButton = (Button)findViewById(R.id.phone_button);
 
         contactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,8 +121,10 @@ public class PhoneActivity extends AppCompatActivity {
                 if (callLogs.size() > 0) {
                     setAdapter(callLogs);
                 }
+                if(cursor != null){
+                    cursor.close();
+                }
             }
-            super.onQueryComplete(token, cookie, cursor);
         }
     }
 

@@ -1,40 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contact_record_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <ListView
-        android:id="@+id/call_log_list"
-        android:layout_weight="5"
+        android:id="@+id/message_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_alignParentTop="true"
-        android:cacheColorHint="@color/white"
-        android:fadingEdge="none"
-        android:scrollingCache="false"
-        android:visibility="visible" />
+        android:layout_weight="5"
+        android:choiceMode="singleChoice"
+        android:soundEffectsEnabled="true" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
         <Button
-            android:id="@+id/contacts_button"
+            android:id="@+id/sms_phone_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="通讯录"
-            android:textSize="30sp"
-            android:layout_weight="1"/>
-
+            android:layout_weight="1"
+            android:text="拨号"
+            android:textSize="30sp"/>
         <Button
-            android:id="@+id/phone_button"
+            android:id="@+id/reply_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="拨号盘"
-            android:textSize="30sp"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:text="回短信"
+            android:textSize="30sp"/>
     </LinearLayout>
 
 </LinearLayout>

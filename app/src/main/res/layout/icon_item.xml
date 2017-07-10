@@ -4,10 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <com.scut.joe.unidesktop.container.IconButton
         android:id="@+id/view_icon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:text="默认"
+        android:textSize="30sp"
         android:scaleType="fitCenter"/>
     <ImageView
         android:id="@+id/delete_iv"

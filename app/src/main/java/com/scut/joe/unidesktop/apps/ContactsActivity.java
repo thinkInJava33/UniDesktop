@@ -109,11 +109,11 @@ public class ContactsActivity extends AppCompatActivity{
                 if (list.size() > 0) {
                     setAdapter(list);
                 }
+                if(cursor != null){
+                    cursor.close();
+                }
             }
-
-            super.onQueryComplete(token, cookie, cursor);
         }
-
     }
 
     private void setAdapter(List<ContactBean> list) {

@@ -55,6 +55,11 @@ public class Check {
                 return true;
             }
         }
+        if(packageName.contains("miui")){
+            if(packageName.contains("gallery")){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -95,6 +100,14 @@ public class Check {
                 PackageManager.GET_RESOLVED_FILTER);
         if(packageName.equals(list.get(0).activityInfo.packageName)
                 && className.equals(list.get(0).activityInfo.name)){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isWechat(ResolveInfo info){
+        String packageName = info.activityInfo.packageName;
+        if(packageName.equals("com.tencent.mm")){
             return true;
         }
         return false;

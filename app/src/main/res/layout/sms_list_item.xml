@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:background="@color/white"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/sms_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="号码"
+        android:textColor="@color/black"
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="25dp" />
+    <TextView
+        android:id="@+id/sms_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="日期"
+        android:textColor="@color/black"
+        android:padding="5dp"
+        android:textSize="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        />
+</RelativeLayout>

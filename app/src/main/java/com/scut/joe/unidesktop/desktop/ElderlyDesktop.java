@@ -38,8 +38,11 @@ public class ElderlyDesktop extends Desktop {
 
     //要申请的权限
     private String[] permissions = {Manifest.permission.CALL_PHONE, Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.READ_CONTACTS};
+            Manifest.permission.READ_CONTACTS, Manifest.permission.READ_SMS};
     private AlertDialog dialog;
+
+    private static final int MY_PERMISSIONS_APPLY = 440;
+    private static final int REQUEST_PERMISSION_SETTING = 123;
 
     public static ElderlyDesktop newInstance(Context context){
         Bundle args = new Bundle();
@@ -103,7 +106,7 @@ public class ElderlyDesktop extends Desktop {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.v("perTest", "请求权限");
-                                requestPermissions(permissions, 440);
+                                requestPermissions(permissions, MY_PERMISSIONS_APPLY);
                                 Log.v("perTest", "是否应该解释"+ shouldShowRequestPermissions(permissions));
                             }
                         })
@@ -123,22 +126,23 @@ public class ElderlyDesktop extends Desktop {
         Log.v("perTest", "回调");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == 440){
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                    //判断用户是否点击了不再提醒
-                    if(shouldShowRequestPermissions(permissions)){
-                        requestPermissions(permissions, 440);
+        switch (requestCode){
+            case MY_PERMISSIONS_APPLY:
+                for(int grantResult: grantResults){
+                    if(grantResult != PackageManager.PERMISSION_GRANTED){
+                        //判断用户是否点击了不再提醒
+                        if(shouldShowRequestPermissions(permissions)){
+                            requestPermissions(permissions, 440);
+                        }
+                        else{
+                            //提示用户去应用设置界面手动开启权限
+                            Log.v("perTest", "应该提示去设置界面开启权限");
+                            showDialogTipUserGoToAppSetting();
+                        }
+                    }else{
+                        Toast.makeText(mContext, "权限获取成功",Toast.LENGTH_LONG).show();
                     }
-                    else{
-                        //提示用户去应用设置界面手动开启权限
-                        Log.v("perTest", "应该提示去设置界面开启权限");
-                        showDialogTipUserGoToAppSetting();
-                    }
-                }else{
-                    Toast.makeText(mContext, "权限获取成功",Toast.LENGTH_LONG).show();
                 }
-            }
         }
     }
 
@@ -176,19 +180,21 @@ public class ElderlyDesktop extends Desktop {
     private void goToAppSetting(){
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        //intent.setAction(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
         Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
         intent.setData(uri);
 
-        startActivityForResult(intent, 123);
+        startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 123){
+        if(requestCode == REQUEST_PERMISSION_SETTING){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 for(String permission: permissions){
                     if(ContextCompat.checkSelfPermission(mContext, permission)!= PackageManager.PERMISSION_GRANTED){
+                        Log.v("perTest", "检查到权限没有允许");
                         showDialogTipUserGoToAppSetting();
                     }
                 }

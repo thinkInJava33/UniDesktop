@@ -1,6 +1,8 @@
 package com.scut.joe.unidesktop.adapter;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
@@ -10,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.container.DragGrid;
+import com.scut.joe.unidesktop.container.IconButton;
 import com.scut.joe.unidesktop.model.AppItem;
 import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.util.dbManager;
@@ -42,7 +44,7 @@ public class IconAdapter extends BaseAdapter {
     class HolderView
     {
         //private TextView item_text;
-        private ImageView iv_icon;
+        private IconButton iv_icon;
         private ImageView iv_delete;
     }
     private boolean isDelete = false;
@@ -92,7 +94,7 @@ public class IconAdapter extends BaseAdapter {
         if (view == null) {
             holderView = new HolderView();
             view = LayoutInflater.from(context).inflate(R.layout.icon_item, parent,false);
-            holderView.iv_icon = (ImageView) view.findViewById(R.id.view_icon);
+            holderView.iv_icon = (IconButton) view.findViewById(R.id.view_icon);
             //holderView.item_text = (TextView) view.findViewById(R.id.app_name);
             holderView.iv_delete = (ImageView) view.findViewById(R.id.delete_iv);
 
@@ -106,9 +108,10 @@ public class IconAdapter extends BaseAdapter {
         }
         holderView = (HolderView)view.getTag();
         final AppItem iconInfo = getItem(position);
-        holderView.iv_icon.setImageDrawable(iconInfo.getAppIcon());
+        holderView.iv_icon.setIcon(iconInfo.getAppIcon());
+        holderView.iv_icon.setText(iconInfo.getAppName());
         //holderView.item_text.setText(iconInfo.getAppName());
-        Common.changeAppBackground(((BitmapDrawable)iconInfo.getAppIcon()).getBitmap(), view);
+        Common.changeAppBackground(((BitmapDrawable)iconInfo.getAppIcon()).getBitmap(), holderView.iv_icon);
         holderView.iv_delete.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -125,6 +128,15 @@ public class IconAdapter extends BaseAdapter {
                         grid.deleteInfo(position);
                     }
                 });
+            }
+        });
+        holderView.iv_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ComponentName componentName = new ComponentName(iconInfo.getPackageName(),iconInfo.getClassName());
+                Intent i = new Intent().setComponent(componentName);
+
+                context.startActivity(i);
             }
         });
 

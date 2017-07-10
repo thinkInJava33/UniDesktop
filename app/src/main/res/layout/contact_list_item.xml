@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="#333333"
         android:paddingLeft="10dip"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         android:visibility="gone" />
 
     <!-- 联系人信息 -->
@@ -35,7 +35,7 @@
         android:layout_toRightOf="@+id/qcb"
         android:singleLine="true"
         android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/number"
