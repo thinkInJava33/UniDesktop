@@ -140,7 +140,7 @@ public class ElderlyDesktop extends Desktop {
                             showDialogTipUserGoToAppSetting();
                         }
                     }else{
-                        Toast.makeText(mContext, "权限获取成功",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "权限获取成功",Toast.LENGTH_SHORT).show();
                     }
                 }
         }
@@ -201,7 +201,7 @@ public class ElderlyDesktop extends Desktop {
                 if(dialog != null && dialog.isShowing()){
                     dialog.dismiss();
                 }
-                Toast.makeText(mContext, "权限TMD获取成功", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "权限TMD获取成功", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -36,9 +36,9 @@
         <activity android:name=".apps.ContactsActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/contacts_name"/>
-        <activity android:name=".apps.PhoneActivity"
+        <activity android:name=".apps.CallRecordsActivity"
             android:theme="@style/Theme.AppCompat.Light"
-            android:label="@string/phone_name"/>
+            android:label="@string/call_records_name"/>
         <activity android:name=".apps.WeatherActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/weather_name"/>

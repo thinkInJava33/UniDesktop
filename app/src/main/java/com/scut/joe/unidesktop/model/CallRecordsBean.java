@@ -4,7 +4,7 @@ package com.scut.joe.unidesktop.model;
  * Created by joe on 17-7-3.
  */
 
-public class CallLogBean {
+public class CallRecordsBean {
     private int id;
     private String name;
     private String number;

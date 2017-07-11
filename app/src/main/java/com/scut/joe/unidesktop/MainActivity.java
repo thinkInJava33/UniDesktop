@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         manager.addItem(ELDERLY_MODE, id++, "短信", this.getResources().getDrawable(R.drawable.message),
                 "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.MessageActivity", 0, 7);
         manager.addItem(ELDERLY_MODE, id++, "通话记录", this.getResources().getDrawable(R.drawable.phone_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.PhoneActivity", 1, 0);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.CallRecordsActivity", 1, 0);
         manager.addItem(ELDERLY_MODE, id++, "联系人", this.getResources().getDrawable(R.drawable.contacts),
                 "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", 1, 1);
         mode0Info = getSharedPreferences("mode0Info",MODE_PRIVATE);

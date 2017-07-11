@@ -11,7 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.scut.joe.unidesktop.R;
-import com.scut.joe.unidesktop.model.CallLogBean;
+import com.scut.joe.unidesktop.model.CallRecordsBean;
 import com.scut.joe.unidesktop.model.CommonViewHolder;
 
 import java.util.List;
@@ -20,17 +20,17 @@ import java.util.List;
  * Created by joe on 17-7-3.
  */
 
-public class DialogAdapter extends CommonAdapter<CallLogBean> {
-    public DialogAdapter(Context context, List<CallLogBean> list) {
+public class DialogAdapter extends CommonAdapter<CallRecordsBean> {
+    public DialogAdapter(Context context, List<CallRecordsBean> list) {
         super(context, list, R.layout.contact_record_list_item);
     }
 
     @Override
-    public void setViewContent(CommonViewHolder viewHolder, final CallLogBean callLogBean) {
-        viewHolder.setText(R.id.name, callLogBean.getName())
-                .setText(R.id.number, callLogBean.getNumber())
-                .setText(R.id.time, callLogBean.getDate());
-        switch (callLogBean.getType()){
+    public void setViewContent(CommonViewHolder viewHolder, final CallRecordsBean callRecordsBean) {
+        viewHolder.setText(R.id.name, callRecordsBean.getName())
+                .setText(R.id.number, callRecordsBean.getNumber())
+                .setText(R.id.time, callRecordsBean.getDate());
+        switch (callRecordsBean.getType()){
             case 1:
                 viewHolder.setBackground(R.id.call_type, R.drawable.ic_calllog_outgoing_nomal);
                 break;
@@ -46,7 +46,7 @@ public class DialogAdapter extends CommonAdapter<CallLogBean> {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("tel:" + callLogBean.getNumber());
+                Uri uri = Uri.parse("tel:" + callRecordsBean.getNumber());
                 Intent intent = new Intent(Intent.ACTION_CALL, uri);
                 if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE)
                         != PackageManager.PERMISSION_GRANTED){

@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:textAppearance="?android:textAppearanceMedium"
+            android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/black" />
 
         <TextView
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="75dip"
         android:layout_toLeftOf="@+id/call_btn"
-        android:background="@drawable/black_bg" />
+        android:background="@drawable/gray_bg" />
 
     <TextView
         android:id="@+id/time"
@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/fg"
-        android:textColor="@color/black" />
+        android:textColor="@color/color_777572"
+        android:textAppearance="?android:textAppearanceMedium"/>
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.scut.joe.unidesktop.apps;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.model.ContactBean;
@@ -111,6 +114,7 @@ public class ContactsActivity extends AppCompatActivity{
                     }
                 }
                 if (list.size() > 0) {
+                    //TODO list排序
                     setAdapter(list);
                 }
                 if(cursor != null){
@@ -123,6 +127,12 @@ public class ContactsActivity extends AppCompatActivity{
     private void setAdapter(List<ContactBean> list) {
         adapter = new ContactListAdapter(this, list, alphabeticBar);
         contactList.setAdapter(adapter);
+        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(ContactsActivity.this, "点击了" + position, Toast.LENGTH_SHORT);
+            }
+        });
         alphabeticBar.init(ContactsActivity.this);
         alphabeticBar.setListView(contactList);
         alphabeticBar.setHight(alphabeticBar.getHeight());

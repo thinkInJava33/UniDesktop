@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.QuickContactBadge;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scut.joe.unidesktop.R;
@@ -58,6 +58,9 @@ public class ContactListAdapter extends BaseAdapter {
         Collections.sort(sectionList); // 根据首字母进行排序
         sections = new String[sectionList.size()];
         sectionList.toArray(sections);
+        for(String section: sections){
+            Log.v("you", section);
+        }
 
         alpha.setAlphaIndexer(alphaIndexer);
 
@@ -88,7 +91,7 @@ public class ContactListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.contact_list_item, null);
             holder = new ViewHolder();
-            holder.quickContactBadge = (QuickContactBadge) convertView
+            holder.quickContactBadge = (ImageView) convertView
                     .findViewById(R.id.qcb);
             holder.alpha = (TextView) convertView.findViewById(R.id.alpha);
             holder.name = (TextView) convertView.findViewById(R.id.name);
@@ -103,10 +106,10 @@ public class ContactListAdapter extends BaseAdapter {
         String number = contact.getPhoneNum();
         holder.name.setText(name);
         holder.number.setText(number);
-        holder.quickContactBadge.assignContactUri(ContactsContract.Contacts.getLookupUri(
-                contact.getContactId(), contact.getLookUpKey()));
+        //holder.quickContactBadge.assignContactUri(ContactsContract.Contacts.getLookupUri(
+                //contact.getContactId(), contact.getLookUpKey()));
         if (0 == contact.getPhotoId()) {
-            holder.quickContactBadge.setImageResource(R.drawable.touxiang);
+            holder.quickContactBadge.setImageResource(R.drawable.person);
         } else {
             Uri uri = ContentUris.withAppendedId(
                     ContactsContract.Contacts.CONTENT_URI,
@@ -132,7 +135,7 @@ public class ContactListAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
-        QuickContactBadge quickContactBadge;
+        ImageView quickContactBadge;
         TextView alpha;
         TextView name;
         TextView number;

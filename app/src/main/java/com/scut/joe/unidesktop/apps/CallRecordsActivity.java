@@ -14,13 +14,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.adapter.DialogAdapter;
-import com.scut.joe.unidesktop.model.CallLogBean;
+import com.scut.joe.unidesktop.model.CallRecordsBean;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,13 +30,13 @@ import java.util.List;
  * Created by joe on 17-6-19.
  */
 
-public class PhoneActivity extends AppCompatActivity {
+public class CallRecordsActivity extends AppCompatActivity {
     private ListView callLogList;
     private Button contactsButton;
     private Button phoneButton;
     private AsyncQueryHandler asyncQuery;
     private DialogAdapter adapter;
-    private List<CallLogBean> callLogs;
+    private List<CallRecordsBean> callLogs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,17 +105,17 @@ public class PhoneActivity extends AppCompatActivity {
                     int id = cursor.getInt(cursor
                             .getColumnIndex(CallLog.Calls._ID));
 
-                    CallLogBean callLogBean = new CallLogBean();
-                    callLogBean.setId(id);
-                    callLogBean.setNumber(number);
-                    callLogBean.setName(cachedName);
+                    CallRecordsBean callRecordsBean = new CallRecordsBean();
+                    callRecordsBean.setId(id);
+                    callRecordsBean.setNumber(number);
+                    callRecordsBean.setName(cachedName);
                     if (null == cachedName || "".equals(cachedName)) {
-                        callLogBean.setName(number);
+                        callRecordsBean.setName(number);
                     }
-                    callLogBean.setType(type);
-                    callLogBean.setDate(sdf.format(date));
+                    callRecordsBean.setType(type);
+                    callRecordsBean.setDate(sdf.format(date));
 
-                    callLogs.add(callLogBean);
+                    callLogs.add(callRecordsBean);
                 }
                 if (callLogs.size() > 0) {
                     setAdapter(callLogs);
@@ -128,7 +127,7 @@ public class PhoneActivity extends AppCompatActivity {
         }
     }
 
-    private void setAdapter(List<CallLogBean> callLogs) {
+    private void setAdapter(List<CallRecordsBean> callLogs) {
         adapter = new DialogAdapter(this, callLogs);
         callLogList.setAdapter(adapter);
     }
