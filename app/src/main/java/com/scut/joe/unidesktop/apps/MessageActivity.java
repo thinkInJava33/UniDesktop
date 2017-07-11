@@ -1,5 +1,6 @@
 package com.scut.joe.unidesktop.apps;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -46,6 +47,18 @@ public class MessageActivity extends AppCompatActivity {
                 i.putExtra("phoneNumber", smsBean.getAddress());
                 i.putExtra("threadId", smsBean.getThread_id());
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                ComponentName componentName = new ComponentName("com.scut.joe.unidesktop",
+                        "com.scut.joe.unidesktop.apps.SendMessageActivity");
+                i.setComponent(componentName);
+                i.putExtra("newMessage", true);
                 startActivity(i);
             }
         });

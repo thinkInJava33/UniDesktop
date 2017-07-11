@@ -59,7 +59,9 @@ public class CallRecordsActivity extends AppCompatActivity {
         phoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "phone? ", Toast.LENGTH_LONG).show();
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_DIAL);
+                startActivity(i);
             }
         });
 

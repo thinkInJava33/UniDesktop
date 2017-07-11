@@ -38,7 +38,7 @@ public class ElderlyDesktop extends Desktop {
 
     //要申请的权限
     private String[] permissions = {Manifest.permission.CALL_PHONE, Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.READ_CONTACTS, Manifest.permission.READ_SMS};
+            Manifest.permission.READ_CONTACTS, Manifest.permission.READ_SMS, Manifest.permission.SEND_SMS};
     private AlertDialog dialog;
 
     private static final int MY_PERMISSIONS_APPLY = 440;

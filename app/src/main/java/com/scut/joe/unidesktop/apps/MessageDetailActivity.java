@@ -1,11 +1,15 @@
 package com.scut.joe.unidesktop.apps;
 
 import android.content.AsyncQueryHandler;
+import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +28,8 @@ import java.util.List;
 
 public class MessageDetailActivity extends AppCompatActivity {
     private ListView talkView;
+    private Button dialButton;
+    private Button replyButton;
     private List<MessageBean> messages = null;
     private AsyncQueryHandler asyncQuery;
     private SimpleDateFormat sdf;
@@ -32,6 +38,34 @@ public class MessageDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message_view);
+
+        dialButton = (Button) findViewById(R.id.sms_phone_button);
+        replyButton = (Button) findViewById(R.id.reply_button);
+
+        final String number = getIntent().getStringExtra("phoneNumber");
+
+        dialButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_DIAL);
+                i.setData(Uri.parse("tel:" + number));
+                startActivity(i);
+            }
+        });
+
+        replyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                ComponentName componentName = new ComponentName("com.scut.joe.unidesktop",
+                        "com.scut.joe.unidesktop.apps.SendMessageActivity");
+                i.setComponent(componentName);
+                i.putExtra("phoneNumber", number);
+                i.putExtra("newMessage", false);
+                startActivity(i);
+            }
+        });
+
         sdf = new SimpleDateFormat("MM-dd HH:mm");
         String thread = getIntent().getStringExtra("threadId");
         init(thread);

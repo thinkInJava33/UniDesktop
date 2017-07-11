@@ -10,6 +10,11 @@
     <string name="call_records_name">通话记录</string>
     <string name="phone_name">电话</string>
     <string name="message_detail">短信细节</string>
+    <string name="send_message">发短信</string>
+    <string name="hint_one">输入号码</string>
+    <string name="hint_two">输入短信内容</string>
+    <string name="clear">清除</string>
+    <string name="send">发送</string>
     <string name="home">快捷菜单</string>
     <string name="search_hint">请输入想要查询的内容</string>
 </resources>
