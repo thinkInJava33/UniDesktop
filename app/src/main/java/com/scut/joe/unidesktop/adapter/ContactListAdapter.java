@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public class ContactListAdapter extends BaseAdapter {
         this.ctx = context;
         this.inflater = LayoutInflater.from(context);
         this.list = list;
-        this.alphaIndexer = new HashMap<String, Integer>();
+        this.alphaIndexer = new HashMap<>();
         this.sections = new String[list.size()];
 
         for (int i = 0; i < list.size(); i++) {

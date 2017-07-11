@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.container.DragGrid;

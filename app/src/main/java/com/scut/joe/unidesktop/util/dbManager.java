@@ -31,7 +31,7 @@ public class dbManager {
     }
 
     public void addItem(int mode,int id, String name,Drawable icon,String packageName,
-            String className,int pageNum, int index,int row, int isEmpty) {
+            String className,int pageNum, int index, int isEmpty) {
         //第一步，将Drawable对象转化为Bitmap对象
         //第二步，声明并创建一个输出字节流对象
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -49,7 +49,6 @@ public class dbManager {
         cv.put("class_name", className);
         cv.put("page_num", pageNum);
         cv.put("page_index", index);
-        cv.put("page_row", row);
         cv.put("is_empty", isEmpty);
 
         db.insert(mode2tableName(mode),null,cv);
@@ -78,7 +77,7 @@ public class dbManager {
     }
 
     public void addEmptyItem(int mode,int id,int pageNum,int index){
-        addItem(mode,id,"",null,"","",pageNum,index,-1,1);
+        addItem(mode,id,"",null,"","",pageNum,index,1);
     }
 
     public void addItems(List<AppItem> items, int mode){
@@ -97,7 +96,6 @@ public class dbManager {
                 cv.put("class_name", item.getClassName());
                 cv.put("page_num", item.getPageNum());
                 cv.put("page_index", item.getIndex());
-                cv.put("page_row", item.getPageRow());
                 cv.put("is_empty", item.getIsEmpty());
                 db.insert(mode2tableName(mode),null,cv);
             }
@@ -192,7 +190,6 @@ public class dbManager {
             app.setPageNum(cursor.getInt(cursor.getColumnIndex("page_num")));
             if(mode2tableName(mode) == "individuality_tb") {
                 app.setIsEmpty(cursor.getInt(cursor.getColumnIndex("is_empty")));
-                app.setPageRow(cursor.getInt(cursor.getColumnIndex("page_row")));
             }
             apps.add(app);
         }

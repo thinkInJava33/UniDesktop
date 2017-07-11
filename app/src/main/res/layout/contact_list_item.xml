@@ -35,7 +35,8 @@
         android:layout_toRightOf="@+id/qcb"
         android:singleLine="true"
         android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="30sp"/>
 
     <TextView
         android:id="@+id/number"
@@ -46,6 +47,6 @@
         android:layout_toRightOf="@+id/qcb"
         android:singleLine="true"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/black" />
 
 </RelativeLayout>

@@ -185,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
                         resolveInfo.loadIcon(pm),
                         tempPackageName, tempClassName, 0, 5);
             }
+            else if(resolveInfo.activityInfo.packageName.equals("com.sina.weibo")){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        resolveInfo.loadIcon(pm),
+                        tempPackageName, tempClassName, 1, 2);
+            }
         }
         manager.addItem(ELDERLY_MODE, id++, "天气", this.getResources().getDrawable(R.drawable.default_icon),
                 "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.WeatherActivity", 0, 6);
@@ -230,7 +235,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 3; i < activities.size(); i++) {
             int pageNum = i / 12;
             int index = i % 12;
-            int row = -1;
             int isEmpty = 0;
             ResolveInfo appInfo = activities.get(i);
             if(appInfo.activityInfo.packageName.equals("com.android.dialer")) {
@@ -254,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 index = 3;
             }
             AppItem item = new AppItem(i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
-                    appInfo.activityInfo.name, pageNum, index, row, isEmpty);
+                    appInfo.activityInfo.name, pageNum, index, isEmpty);
             list.add(item);
         }
         manager.addItems(list, INDIVIDUALITY_MODE);

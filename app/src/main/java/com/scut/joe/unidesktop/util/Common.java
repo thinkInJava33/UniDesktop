@@ -3,7 +3,12 @@ package com.scut.joe.unidesktop.util;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.graphics.Palette;
+import android.util.Log;
 import android.view.View;
+
+import com.scut.joe.unidesktop.util.ChineseToPhoneticize.Token;
+
+import java.util.ArrayList;
 
 public class Common {
 
@@ -49,5 +54,23 @@ public class Common {
 				}
 			}
 		});
+	}
+
+	//汉字返回拼音，字母原样返回，都转换为小写
+	public static String getPhoneticize(String input) {
+		ArrayList<Token> tokens = ChineseToPhoneticize.getInstance().get(input);
+		Log.v("my", tokens.toString());
+		StringBuilder sb = new StringBuilder();
+		if (tokens != null && tokens.size() > 0) {
+			for (Token token : tokens) {
+				if (Token.PINYIN == token.type) {
+					sb.append(token.target);
+				} else {
+					sb.append(token.source);
+				}
+			}
+		}
+		Log.v("my", "调用了呀"+ input + sb.toString());
+		return sb.toString().toLowerCase();
 	}
 }

@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.model.ContactBean;
 import com.scut.joe.unidesktop.adapter.ContactListAdapter;
+import com.scut.joe.unidesktop.util.Common;
 import com.scut.joe.unidesktop.widget.QuickAlphabeticBar;
 
 import java.util.ArrayList;
@@ -87,6 +89,7 @@ public class ContactsActivity extends AppCompatActivity{
                     String name = cursor.getString(1);
                     String number = cursor.getString(2);
                     String sortKey = cursor.getString(3);
+                    String transferKey = Common.getPhoneticize(sortKey);
                     int contactId = cursor.getInt(4);
                     Long photoId = cursor.getLong(5);
                     String lookUpKey = cursor.getString(6);
@@ -98,7 +101,8 @@ public class ContactsActivity extends AppCompatActivity{
                         ContactBean contact = new ContactBean();
                         contact.setDesplayName(name);
                         contact.setPhoneNum(number);
-                        contact.setSortKey(sortKey);
+                        contact.setSortKey(transferKey);
+                        Log.v("my", name + transferKey);
                         contact.setPhotoId(photoId);
                         contact.setLookUpKey(lookUpKey);
                         list.add(contact);
