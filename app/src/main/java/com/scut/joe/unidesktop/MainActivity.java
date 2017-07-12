@@ -6,7 +6,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.net.Uri;
 import android.provider.Contacts;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -265,44 +268,77 @@ public class MainActivity extends AppCompatActivity {
 
         //manager = new dbManager(mContext);
         TextView time = new TextView(this);
-
-
-        for (int i = 3; i < activities.size(); i++) {
-            int pageNum = i / 12;
-            int index = i % 12;
+        int realIndex = 0;
+        int pageCount = 0;
+        for (int i = 0; i < activities.size(); i++) {
+            int pageNum = realIndex / 8;
+            pageCount = pageNum;
+            int index = realIndex % 8;
             int isEmpty = 0;
             ResolveInfo appInfo = activities.get(i);
             if(appInfo.activityInfo.packageName.equals("com.android.dialer")) {
-                manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
                 pageNum = -1;
                 index = 0;
+                realIndex --;
             }
             if(appInfo.activityInfo.packageName.equals("com.android.contacts")){
-                manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
                 pageNum = -1;
                 index = 1;
+                realIndex --;
             }
             if(appInfo.activityInfo.packageName.equals("com.android.mms")){
-                manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
                 pageNum = -1;
                 index = 2;
+                realIndex --;
             }
             if(appInfo.activityInfo.packageName.equals("com.android.browser")){
-                manager.addEmptyItem(INDIVIDUALITY_MODE, i + activities.size(), pageNum,index);
                 pageNum = -1;
                 index = 3;
+                realIndex --;
             }
             AppItem item = new AppItem(i, appInfo.loadLabel(pm).toString(), appInfo.loadIcon(pm), appInfo.activityInfo.packageName,
                     appInfo.activityInfo.name, pageNum, index, isEmpty);
             list.add(item);
+            realIndex++;
+        }
+        int count = 0;
+        for(int i = 0; i < pageCount ; i++){
+            for(int j = 8;j < 20; j++){
+                manager.addEmptyItem(INDIVIDUALITY_MODE,count+activities.size(),i,j);
+                count++;
+            }
+        }
+        for(int i = 16 - (activities.size() - 4)%8 ; i < 20; i++ ){
+            manager.addEmptyItem(INDIVIDUALITY_MODE,count+activities.size(),pageCount,i);
+            count++;
         }
         manager.addItems(list, INDIVIDUALITY_MODE);
         mode2Info = getSharedPreferences("mode2Info",MODE_PRIVATE);
-        mode2Editor= mode2Info.edit();
-        mode2Editor.putInt("page_num", activities.size()/15 + 1);
+        mode2Editor = mode2Info.edit();
+        mode2Editor.putInt("page_num", activities.size()/12 + 1);
         mode2Editor.putInt("page_row", 5);
         mode2Editor.putInt("page_col", 3);
         mode2Editor.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            SharedPreferences wall = getSharedPreferences("wallPaper",MODE_PRIVATE);
+            SharedPreferences.Editor wallEditor = wall.edit();
+            wallEditor.putString("imagePath",picturePath);
+            wallEditor.commit();
+            cursor.close();
+        }
     }
 }
 

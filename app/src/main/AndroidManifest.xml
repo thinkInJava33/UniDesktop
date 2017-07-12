@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.autofocus"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -56,8 +58,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".apps.TransferActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".apps.EmergencyCallActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
 
     </application>
 

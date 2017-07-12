@@ -1,13 +1,23 @@
 package com.scut.joe.unidesktop.desktop;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -55,6 +65,10 @@ public class IndividualityDesktop extends Desktop implements FragmentBackHandler
      */
     private boolean isMove = false;
 
+    private static final String[] PERMISSION_EXTERNAL_STORAGE = new String[] {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    private static final int REQUEST_EXTERNAL_STORAGE = 100;
+
     public static IndividualityDesktop newInstance(Context context){
         Bundle args = new Bundle();
         mContext = context;
@@ -91,6 +105,13 @@ public class IndividualityDesktop extends Desktop implements FragmentBackHandler
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        setWallpaper();
+        Log.i("test","onstart");
+    }
+
+    @Override
     public boolean onBackPressed() {
         Common.isDrag = false;
         mToolBar.refresh();
@@ -118,14 +139,22 @@ public class IndividualityDesktop extends Desktop implements FragmentBackHandler
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void setWallpaper() {
         WallpaperManager wallpaperManager = WallpaperManager
                 .getInstance(mContext);
         // 获取当前壁纸
-        Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-
-        v.setBackgroundDrawable(wallpaperDrawable);
+        String wallPaper = mContext.getSharedPreferences("wallPaper",MODE_PRIVATE).getString("imagePath","");
+       if(wallPaper.equals("")) {
+           Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+           v.setBackgroundDrawable(wallpaperDrawable);
+       }else{
+           verifyStoragePermissions(getActivity());
+           Bitmap wallPaperBitmap = BitmapFactory.decodeFile(wallPaper);
+           Drawable wallPaperDrawable = new BitmapDrawable(wallPaperBitmap);
+           v.setBackgroundDrawable(wallPaperDrawable);
+       }
     }
 
     @Override
@@ -209,5 +238,14 @@ public class IndividualityDesktop extends Desktop implements FragmentBackHandler
             app.setAppName("");
         }
         return list;
+    }
+
+    private void verifyStoragePermissions(Activity activity) {
+        int permissionWrite = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(permissionWrite != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, PERMISSION_EXTERNAL_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
     }
 }

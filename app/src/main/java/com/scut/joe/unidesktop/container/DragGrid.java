@@ -39,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.scut.joe.unidesktop.MainActivity;
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.apps.SearchActivity;
 import com.scut.joe.unidesktop.adapter.DragAdapter;
@@ -566,14 +567,17 @@ public class DragGrid extends GridView {
 								switch (which){
 									case 0:
 										Log.i("test","壁纸");
+										Intent i = new Intent(
+												Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+										((MainActivity)mContext).startActivityForResult(i, 0);
 										break;
 									case 1:
 										Log.i("test","模式");
-										Intent i = new Intent();
+										Intent intent1 = new Intent();
 										ComponentName componentName = new ComponentName("com.scut.joe.unidesktop",
 												"com.scut.joe.unidesktop.apps.TransferActivity");
-										i.setComponent(componentName);
-										mContext.startActivity(i);
+										intent1.setComponent(componentName);
+										mContext.startActivity(intent1);
 										break;
 									case 2:
 										Log.i("test","系统设置");
