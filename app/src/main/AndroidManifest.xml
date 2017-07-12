@@ -8,7 +8,11 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.autofocus"/>
 
     <application
         android:allowBackup="true"
@@ -40,9 +44,9 @@
         <activity android:name=".apps.CallRecordsActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/call_records_name"/>
-        <activity android:name=".apps.WeatherActivity"
+        <activity android:name=".apps.FlashLightActivity"
             android:theme="@style/Theme.AppCompat.Light"
-            android:label="@string/weather_name"/>
+            android:label="@string/flash_light_name"/>
         <activity android:name=".apps.MessageDetailActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/message_detail"/>
@@ -51,27 +55,6 @@
             android:label="@string/send_message"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
 
-        <service
-            android:name=".widget.TimeService"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="com.example.idoit.test.TimeService" />
-            </intent-filter>
-        </service>
-
-        <receiver android:name=".widget.ClockAppWidgetProvider">
-            <!-- 广播接收的action：当appwidget改变时 -->
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.wd.appWidgetUpdate"></action>
-                <action android:name="android.intent.action.TIME_CHANGED"></action>
-                <action android:name="android.intent.action.TIME_TICK"></action>
-                <action android:name="android.intent.action.TIME_SET"></action>
-            </intent-filter>
-            <!-- 设置元数据：将ClockAppWidgetProvider类和AppWidgetProviderInfo对象appwidget_provider_time关联起来 -->
-            <meta-data android:name="android.appwidget.provider"
-                       android:resource="@xml/provider_info"/>
-        </receiver>
     </application>
 
 </manifest>

@@ -27,6 +27,10 @@ import android.widget.Toast;
 
 import com.scut.joe.unidesktop.R;
 import com.scut.joe.unidesktop.page.ElderlyPage;
+import com.scut.joe.unidesktop.util.Common;
+import com.scut.joe.unidesktop.util.FragmentBackHandler;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by joe on 17-6-16.
@@ -88,7 +92,7 @@ public class ElderlyDesktop extends Desktop {
 
             @Override
             public int getCount() {
-                return 2;
+                return getActivity().getSharedPreferences("mode0Info", MODE_PRIVATE).getInt("page_num", 2);
             }
         });
 
@@ -126,6 +130,7 @@ public class ElderlyDesktop extends Desktop {
         Log.v("perTest", "回调");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        int i = 1;
         switch (requestCode){
             case MY_PERMISSIONS_APPLY:
                 for(int grantResult: grantResults){
@@ -140,9 +145,10 @@ public class ElderlyDesktop extends Desktop {
                             showDialogTipUserGoToAppSetting();
                         }
                     }else{
-                        Toast.makeText(mContext, "权限获取成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "第"+ i++ +"个权限获取成功",Toast.LENGTH_SHORT).show();
                     }
                 }
+                break;
         }
     }
 
@@ -196,12 +202,11 @@ public class ElderlyDesktop extends Desktop {
                     if(ContextCompat.checkSelfPermission(mContext, permission)!= PackageManager.PERMISSION_GRANTED){
                         Log.v("perTest", "检查到权限没有允许");
                         showDialogTipUserGoToAppSetting();
-                    }
+                    }else Toast.makeText(mContext, "权限获取成功", Toast.LENGTH_SHORT).show();
                 }
                 if(dialog != null && dialog.isShowing()){
                     dialog.dismiss();
                 }
-                Toast.makeText(mContext, "权限TMD获取成功", Toast.LENGTH_SHORT).show();
             }
         }
     }

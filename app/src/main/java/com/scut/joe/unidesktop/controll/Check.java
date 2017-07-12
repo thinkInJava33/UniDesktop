@@ -15,6 +15,7 @@ import java.util.List;
  */
 
 public class Check {
+    static private String packageName;
 
     /**
      *
@@ -29,7 +30,7 @@ public class Check {
     }
 
     public static boolean isSystemClock(ResolveInfo info){
-        String packageName = info.activityInfo.packageName;
+        packageName = info.activityInfo.packageName;
         if(packageName.contains("com") && packageName.contains("android")){
             if(packageName.contains("clock")){
                 return true;
@@ -39,7 +40,7 @@ public class Check {
     }
 
     public static boolean isSystemCalendar(ResolveInfo info){
-        String packageName = info.activityInfo.packageName;
+        packageName = info.activityInfo.packageName;
         if(packageName.contains("com") && packageName.contains("android")){
             if(packageName.contains("calendar")){
                 return true;
@@ -49,7 +50,7 @@ public class Check {
     }
 
     public static boolean isSystemGallery(ResolveInfo info){
-        String packageName = info.activityInfo.packageName;
+        packageName = info.activityInfo.packageName;
         if(packageName.contains("com") && packageName.contains("android")){
             if(packageName.contains("gallery")||packageName.contains("photo")){
                 return true;
@@ -64,11 +65,14 @@ public class Check {
     }
 
     public static boolean isSystemCamera(ResolveInfo info){
-        String packageName = info.activityInfo.packageName;
+        packageName = info.activityInfo.packageName;
         if(packageName.contains("com") && packageName.contains("android")){
             if(packageName.contains("camera")){
                 return true;
             }
+        }
+        if(packageName.contains("huawei")&& packageName.contains("camera")){
+            return true;
         }
         return false;
     }
@@ -106,10 +110,42 @@ public class Check {
     }
 
     public static boolean isWechat(ResolveInfo info){
-        String packageName = info.activityInfo.packageName;
+        packageName = info.activityInfo.packageName;
         if(packageName.equals("com.tencent.mm")){
             return true;
         }
         return false;
     }
+
+    public static boolean isWeather(ResolveInfo info){
+        packageName = info.activityInfo.packageName;
+        if(packageName.contains("weather")){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isVideo(ResolveInfo info){
+        packageName = info.activityInfo.packageName;
+        if(packageName.contains("video")){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isMusicPlayer(ResolveInfo info){
+        packageName = info.activityInfo.packageName;
+        String className = info.activityInfo.name;
+        if(packageName.contains("Music")|| packageName.contains("music")){
+            return true;
+        }
+        if(packageName.contains("miui")&& className.contains("Music")){
+            return true;
+        }
+        if(packageName.contains("com.android.media")){
+            return true;
+        }
+        return false;
+    }
+
 }

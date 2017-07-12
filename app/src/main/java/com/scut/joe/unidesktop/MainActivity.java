@@ -148,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         String tempPackageName = null;
         String tempClassName = null;
         int id = 0;
+        int pageNum = 0;
+        int index = 0;
         Intent startupIntent = new Intent(Intent.ACTION_MAIN);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = this.getPackageManager();
@@ -155,53 +157,74 @@ public class MainActivity extends AppCompatActivity {
         for(ResolveInfo resolveInfo: resolveInfos){
             tempPackageName = resolveInfo.activityInfo.packageName;
             tempClassName = resolveInfo.activityInfo.name;
+            pageNum = index / 8;
             if(Check.isSystemClock(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         resolveInfo.loadIcon(pm),
-                        tempPackageName, tempClassName, 0, 0);
+                        tempPackageName, tempClassName, pageNum, index++);
             }
             else if(Check.isSystemCalendar(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         resolveInfo.loadIcon(pm),
-                        tempPackageName, tempClassName, 0, 1);
+                        tempPackageName, tempClassName, pageNum, index++);
             }
             else if(Check.isSystemGallery(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         resolveInfo.loadIcon(pm),
-                        tempPackageName, tempClassName, 0, 2);
+                        tempPackageName, tempClassName, pageNum, index++);
             }
             else if(Check.isSystemCamera(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         resolveInfo.loadIcon(pm),
-                        tempPackageName, tempClassName, 0, 3);
+                        tempPackageName, tempClassName, pageNum, index++);
             }
             else if(Check.isBrowser(resolveInfo, mContext)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         resolveInfo.loadIcon(pm),
-                        tempPackageName, tempClassName, 0, 4);
+                        tempPackageName, tempClassName, pageNum, index++);
             }
             else if(Check.isWechat(resolveInfo)){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         resolveInfo.loadIcon(pm),
-                        tempPackageName, tempClassName, 0, 5);
+                        tempPackageName, tempClassName, pageNum, index++);
             }
             else if(resolveInfo.activityInfo.packageName.equals("com.sina.weibo")){
                 manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
                         resolveInfo.loadIcon(pm),
-                        tempPackageName, tempClassName, 1, 2);
+                        tempPackageName, tempClassName, pageNum, index++);
+            }
+            else if(Check.isMusicPlayer(resolveInfo)){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        resolveInfo.loadIcon(pm),
+                        tempPackageName, tempClassName, pageNum, index++);
+            }
+            else if(Check.isWeather(resolveInfo)){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        resolveInfo.loadIcon(pm),
+                        tempPackageName, tempClassName, pageNum, index++);
+            }
+            else if(Check.isVideo(resolveInfo)){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        resolveInfo.loadIcon(pm),
+                        tempPackageName, tempClassName, pageNum, index++);
             }
         }
-        manager.addItem(ELDERLY_MODE, id++, "天气", this.getResources().getDrawable(R.drawable.default_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.WeatherActivity", 0, 6);
-        manager.addItem(ELDERLY_MODE, id++, "短信", this.getResources().getDrawable(R.drawable.message),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.MessageActivity", 0, 7);
+        manager.addItem(ELDERLY_MODE, id++, "手电筒", this.getResources().getDrawable(R.drawable.flashlight),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.FlashLightActivity", index/8, index++);
+        Log.v("test", "手电筒" +index);
+        manager.addItem(ELDERLY_MODE, id++, "短信", this.getResources().getDrawable(R.drawable.message_icon),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.MessageActivity", index/8, index++);
+        Log.v("test", "短信" +index);
         manager.addItem(ELDERLY_MODE, id++, "通话记录", this.getResources().getDrawable(R.drawable.phone_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.CallRecordsActivity", 1, 0);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.CallRecordsActivity", index/8, index++);
+        Log.v("test", "通话记录" +index);
         manager.addItem(ELDERLY_MODE, id++, "联系人", this.getResources().getDrawable(R.drawable.contacts),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", 1, 1);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", index/8, index);
+        Log.v("test", "联系人" +index);
         mode0Info = getSharedPreferences("mode0Info",MODE_PRIVATE);
         mode0Editor= mode0Info.edit();
-        mode0Editor.putInt("page_num", 1);
+        mode0Editor.putInt("page_num", index/8 + 1);
+        Log.v("test", "" +(index/8));
         mode0Editor.putInt("page_row", 4);
         mode0Editor.putInt("page_col", 2);
         mode0Editor.commit();

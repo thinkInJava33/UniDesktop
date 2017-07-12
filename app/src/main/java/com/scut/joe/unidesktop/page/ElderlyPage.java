@@ -94,7 +94,6 @@ public class ElderlyPage extends Fragment implements FragmentBackHandler{
     @Override
     public boolean onBackPressed() {
         Common.isDrag = false;
-        dragGrid.refresh();
         return true;
     }
 
