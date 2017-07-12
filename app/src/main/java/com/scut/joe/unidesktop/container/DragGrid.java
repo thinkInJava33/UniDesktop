@@ -9,6 +9,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -568,6 +569,11 @@ public class DragGrid extends GridView {
 										break;
 									case 1:
 										Log.i("test","模式");
+										Intent i = new Intent();
+										ComponentName componentName = new ComponentName("com.scut.joe.unidesktop",
+												"com.scut.joe.unidesktop.apps.TransferActivity");
+										i.setComponent(componentName);
+										mContext.startActivity(i);
 										break;
 									case 2:
 										Log.i("test","系统设置");

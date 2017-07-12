@@ -54,6 +54,8 @@
             android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/send_message"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:name=".apps.TransferActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
     </application>
 
