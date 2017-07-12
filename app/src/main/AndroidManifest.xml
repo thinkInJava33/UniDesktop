@@ -56,6 +56,8 @@
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".apps.TransferActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".apps.EmergencyCallActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
     </application>
 
