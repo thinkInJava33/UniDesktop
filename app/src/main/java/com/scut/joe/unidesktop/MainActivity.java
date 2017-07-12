@@ -211,7 +211,14 @@ public class MainActivity extends AppCompatActivity {
                         resolveInfo.loadIcon(pm),
                         tempPackageName, tempClassName, pageNum, index++);
             }
+            else if(Check.isSetting(resolveInfo)){
+                manager.addItem(ELDERLY_MODE, id++, resolveInfo.loadLabel(pm).toString(),
+                        resolveInfo.loadIcon(pm),
+                        tempPackageName, tempClassName, pageNum, index++);
+            }
         }
+        manager.addItem(ELDERLY_MODE, id++, "紧急联系", this.getResources().getDrawable(R.drawable.mergency_icon),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.FlashLightActivity", index/8, index++);
         manager.addItem(ELDERLY_MODE, id++, "手电筒", this.getResources().getDrawable(R.drawable.flashlight),
                 "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.FlashLightActivity", index/8, index++);
         Log.v("test", "手电筒" +index);
@@ -222,8 +229,10 @@ public class MainActivity extends AppCompatActivity {
                 "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.CallRecordsActivity", index/8, index++);
         Log.v("test", "通话记录" +index);
         manager.addItem(ELDERLY_MODE, id++, "联系人", this.getResources().getDrawable(R.drawable.contacts),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", index/8, index);
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.ContactsActivity", index/8, index++);
         Log.v("test", "联系人" +index);
+        manager.addItem(ELDERLY_MODE, id++, "切换模式", this.getResources().getDrawable(R.drawable.default_icon),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.TransferActivity", index/8, index);
         mode0Info = getSharedPreferences("mode0Info",MODE_PRIVATE);
         mode0Editor= mode0Info.edit();
         mode0Editor.putInt("page_num", index/8 + 1);

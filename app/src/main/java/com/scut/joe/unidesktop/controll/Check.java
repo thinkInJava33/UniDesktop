@@ -148,4 +148,12 @@ public class Check {
         return false;
     }
 
+    public static boolean isSetting(ResolveInfo info){
+        packageName = info.activityInfo.packageName;
+        if(packageName.contains("setting")){
+            return true;
+        }
+        return false;
+    }
+
 }

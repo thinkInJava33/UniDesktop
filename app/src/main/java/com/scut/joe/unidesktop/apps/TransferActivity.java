@@ -22,7 +22,6 @@ public class TransferActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.transfer_view);
 
         modePreference = getSharedPreferences("mode", Context.MODE_PRIVATE);
         modeEditor = modePreference.edit();
