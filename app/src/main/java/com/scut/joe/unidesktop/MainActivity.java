@@ -96,7 +96,10 @@ public class MainActivity extends AppCompatActivity {
                 modeEditor.putInt("choose", chooseMode);
                 modeEditor.commit();
                 long startTime = System.nanoTime();
-                initInfo(chooseMode);
+                if(!manager.tableHasData(chooseMode)){
+                    initInfo(chooseMode);
+                    Log.v("test", "二次initInfo加载");
+                }
                 long costTime = System.nanoTime() - startTime;
                 Log.v("timeTest", "initInfo加载耗时： "+ costTime/1000000 + "毫秒");
                 startTime = System.nanoTime();
