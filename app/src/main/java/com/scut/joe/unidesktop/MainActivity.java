@@ -220,8 +220,8 @@ public class MainActivity extends AppCompatActivity {
                         tempPackageName, tempClassName, pageNum, index++);
             }
         }
-        manager.addItem(ELDERLY_MODE, id++, "紧急联系", this.getResources().getDrawable(R.drawable.mergency_icon),
-                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.FlashLightActivity", index/8, index++);
+        manager.addItem(ELDERLY_MODE, id++, "紧急联系", this.getResources().getDrawable(R.drawable.emergency_icon),
+                "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.EmergencyCallActivity", index/8, index++);
         manager.addItem(ELDERLY_MODE, id++, "手电筒", this.getResources().getDrawable(R.drawable.flashlight),
                 "com.scut.joe.unidesktop", "com.scut.joe.unidesktop.apps.FlashLightActivity", index/8, index++);
         Log.v("test", "手电筒" +index);
